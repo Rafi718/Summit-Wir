@@ -4,6 +4,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 it('shows on_rent orders in the renting tab and profile summary', function () {
     $user = User::factory()->create([
@@ -178,6 +179,67 @@ it('does not reserve stock twice when payment settlement is received more than o
         ->and($order->return_date)->not->toBeNull()
         ->and($product->fresh()->stock)->toBe(8)
         ->and($product->fresh()->sold)->toBe(2);
+});
+
+it('sends a whatsapp receipt once when payment settlement succeeds', function () {
+    config(['services.fonnte.token' => 'test-token']);
+
+    Http::fake([
+        'api.fonnte.com/send' => Http::response([
+            'status' => true,
+            'detail' => 'success! message in queue',
+        ]),
+    ]);
+
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+        'name' => 'Budi Summit',
+        'no_hp' => '081234567890',
+    ]);
+
+    $product = Product::create([
+        'name' => 'Tenda Family',
+        'description' => 'Tenda camping keluarga',
+        'price' => 100000,
+        'stock' => 4,
+        'sold' => 0,
+        'image' => 'products/tents.jpg',
+    ]);
+
+    $order = Order::create([
+        'user_id' => $user->id,
+        'duration' => 2,
+        'status' => Order::STATUS_PENDING,
+        'total_price' => 200000,
+        'total_fine' => 0,
+    ]);
+
+    OrderDetail::create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 1,
+    ]);
+
+    $payload = [
+        'order_id' => $order->id,
+        'transaction_status' => 'settlement',
+    ];
+
+    $this->postJson('/payment/notification', $payload)->assertOk();
+    $this->postJson('/payment/notification', $payload)->assertOk();
+
+    $order->refresh();
+
+    expect($order->whatsapp_receipt_sent_at)->not->toBeNull();
+
+    Http::assertSentCount(1);
+    Http::assertSent(fn ($request) => $request->url() === 'https://api.fonnte.com/send'
+        && $request['target'] === '081234567890'
+        && str_contains($request['message'], 'Budi Summit')
+        && str_contains($request['message'], 'ORD'.str_pad((string) $order->id, 5, '0', STR_PAD_LEFT))
+        && str_contains($request['message'], 'Rp100.000')
+        && str_contains($request['message'], route('profile.orders.invoice', $order))
+        && $request['countryCode'] === '62');
 });
 
 it('does not reserve stock again when admin starts a paid rental', function () {

@@ -17,7 +17,7 @@
         </ul>
 
         {{-- Bagian kanan: Keranjang & Account --}}
-        <div class="hidden md:flex items-center space-x-6">
+        <div class="hidden md:flex items-center space-x-3">
            
             {{-- Hover Keranjang --}}
             <div class="relative cart-hover-container">
@@ -133,7 +133,7 @@
             {{-- Akun --}}
             @auth
                 <a href="{{ route('profile.index') }}"
-                    class="flex items-center gap-3 rounded-xl px-3 py-2 transition hover:bg-black/5"
+                    class="flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-black/5"
                     title="Profil Saya">
                     <div class="flex h-10 w-10 items-center justify-center rounded-full bg-black/10">
                         <i class="fas fa-user nav-icon"></i>

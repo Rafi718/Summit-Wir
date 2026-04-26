@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Services\OrderReceiptWhatsappService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
@@ -12,7 +13,7 @@ use Midtrans\Snap;
 
 class PaymentController extends Controller
 {
-    public function __construct()
+    public function __construct(private readonly OrderReceiptWhatsappService $orderReceiptWhatsappService)
     {
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
@@ -152,6 +153,7 @@ class PaymentController extends Controller
                 }
 
                 $order->startRental();
+                $this->orderReceiptWhatsappService->send($order->fresh());
                 break;
 
             case 'expire':

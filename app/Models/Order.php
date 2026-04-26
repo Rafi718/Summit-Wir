@@ -29,12 +29,14 @@ class Order extends Model
         'total_price',
         'total_fine',
         'snap_token',
+        'whatsapp_receipt_sent_at',
     ];
 
     protected $casts = [
         'loan_date' => 'datetime',
         'return_date' => 'datetime',
         'duration' => 'integer',
+        'whatsapp_receipt_sent_at' => 'datetime',
     ];
 
     protected $dates = ['loan_date', 'return_date'];
