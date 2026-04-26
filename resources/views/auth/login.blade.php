@@ -16,7 +16,7 @@
                     <div class="relative flex h-full flex-col justify-between p-6 text-white sm:p-8 lg:p-10">
                         <a
                             href="{{ route('home') }}"
-                            class="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90 backdrop-blur-sm transition hover:bg-white/18"
+                            class="inline-flex w-fit items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90 backdrop-blur-sm transition hover:bg-white/18"
                         >
                             <span aria-hidden="true">&larr;</span>
                             Kembali ke beranda
@@ -42,7 +42,7 @@
                 <div class="flex items-center bg-white/96">
                     <div class="w-full p-6 sm:p-8 lg:p-10 xl:px-12">
                         <div class="mx-auto max-w-md">
-                            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-700">
+                            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-slate-900">
                                 Welcome back
                             </p>
                             <h2
@@ -56,7 +56,7 @@
                             </p>
 
                             @if ($errors->any())
-                                <div class="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                                <div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
                                     <p class="font-semibold">Ada beberapa input yang perlu diperbaiki.</p>
                                     <ul class="mt-2 list-disc space-y-1 pl-5">
                                         @foreach ($errors->all() as $error)
@@ -67,7 +67,7 @@
                             @endif
 
                             @if (session('status'))
-                                <div class="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                                <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
                                     {{ session('status') }}
                                 </div>
                             @endif
@@ -84,7 +84,7 @@
                                         value="{{ old('email') }}"
                                         required
                                         autocomplete="email"
-                                        class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                                        class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-100"
                                         placeholder="you@example.com"
                                     />
                                 </div>
@@ -97,7 +97,7 @@
                                         name="password"
                                         required
                                         autocomplete="current-password"
-                                        class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                                        class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-100"
                                         placeholder="Masukkan password"
                                     />
                                 </div>
@@ -111,14 +111,14 @@
                                         />
                                         <span>Remember me</span>
                                     </label>
-                                    <a href="{{ route('password.request') }}" class="font-semibold text-emerald-700 transition hover:text-emerald-800">
+                                    <a href="{{ route('password.request') }}" class="font-semibold text-slate-900 transition hover:text-slate-700">
                                         Forgot password?
                                     </a>
                                 </div>
 
                                 <button
                                     type="submit"
-                                    class="w-full rounded-2xl bg-green-950 px-5 py-3.5 text-base font-bold text-white shadow-lg shadow-green-950/20 transition hover:bg-green-900 focus:outline-none focus:ring-4 focus:ring-emerald-200"
+                                    class="w-full rounded-xl bg-green-950 px-5 py-3.5 text-base font-bold text-white shadow-lg shadow-green-950/20 transition hover:bg-green-900 focus:outline-none focus:ring-4 focus:ring-emerald-200"
                                 >
                                     Sign In
                                 </button>
@@ -126,7 +126,7 @@
 
                             <p class="mt-8 text-center text-sm text-slate-600">
                                 Belum punya akun?
-                                <a href="{{ route('register') }}" class="font-semibold text-emerald-700 transition hover:text-emerald-800">
+                                <a href="{{ route('register') }}" class="font-semibold text-slate-900 transition hover:text-slate-700">
                                     Sign up
                                 </a>
                             </p>
