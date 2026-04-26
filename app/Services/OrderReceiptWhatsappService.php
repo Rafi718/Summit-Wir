@@ -12,13 +12,28 @@ class OrderReceiptWhatsappService
 
     public function send(Order $order): bool
     {
-        if ($order->whatsapp_receipt_sent_at) {
+        if ($order->whatsapp_receipt_sent_at || $order->whatsapp_receipt_send_attempted_at) {
             return false;
         }
 
         $order->loadMissing(['user', 'orderDetails.product']);
 
         if (blank($order->user?->no_hp)) {
+            return false;
+        }
+
+        if (blank(config('services.fonnte.token'))) {
+            return false;
+        }
+
+        $attemptReserved = Order::whereKey($order->id)
+            ->whereNull('whatsapp_receipt_sent_at')
+            ->whereNull('whatsapp_receipt_send_attempted_at')
+            ->update([
+                'whatsapp_receipt_send_attempted_at' => now(),
+            ]);
+
+        if ($attemptReserved === 0) {
             return false;
         }
 

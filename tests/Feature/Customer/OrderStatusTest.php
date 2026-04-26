@@ -3,6 +3,7 @@
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
+use App\Services\MidtransTransactionStatusService;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
@@ -242,6 +243,180 @@ it('sends a whatsapp receipt once when payment settlement succeeds', function ()
         && $request['countryCode'] === '62');
 });
 
+it('does not retry whatsapp receipts automatically after a fonnte failure', function () {
+    config(['services.fonnte.token' => 'test-token']);
+
+    Http::fake([
+        'api.fonnte.com/send' => Http::response([
+            'status' => false,
+            'reason' => 'server error',
+        ], 500),
+    ]);
+
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+        'name' => 'Aman Summit',
+        'no_hp' => '081234567891',
+    ]);
+
+    $product = Product::create([
+        'name' => 'Sleeping Bag',
+        'description' => 'Sleeping bag hangat',
+        'price' => 50000,
+        'stock' => 3,
+        'sold' => 0,
+        'image' => 'products/sleeping-bag.jpg',
+    ]);
+
+    $order = Order::create([
+        'user_id' => $user->id,
+        'duration' => 1,
+        'status' => Order::STATUS_PENDING,
+        'total_price' => 50000,
+        'total_fine' => 0,
+    ]);
+
+    OrderDetail::create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 1,
+    ]);
+
+    $payload = [
+        'order_id' => $order->id,
+        'transaction_status' => 'settlement',
+    ];
+
+    $this->postJson('/payment/notification', $payload)->assertOk();
+    $this->postJson('/payment/notification', $payload)->assertOk();
+
+    $order->refresh();
+
+    expect($order->whatsapp_receipt_send_attempted_at)->not->toBeNull();
+    expect($order->whatsapp_receipt_sent_at)->toBeNull();
+
+    Http::assertSentCount(1);
+});
+
+it('does not trust browser payment sync status when midtrans has not confirmed settlement', function () {
+    config(['services.fonnte.token' => 'test-token']);
+
+    $this->app->bind(MidtransTransactionStatusService::class, fn () => new class extends MidtransTransactionStatusService
+    {
+        public function getStatus(Order $order): ?string
+        {
+            return 'pending';
+        }
+    });
+
+    Http::fake([
+        'api.fonnte.com/send' => Http::response([
+            'status' => true,
+            'detail' => 'success! message in queue',
+        ]),
+    ]);
+
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+        'no_hp' => '081234567892',
+    ]);
+
+    $product = Product::create([
+        'name' => 'Carrier 45L',
+        'description' => 'Tas carrier',
+        'price' => 80000,
+        'stock' => 5,
+        'sold' => 0,
+        'image' => 'products/carrier.jpg',
+    ]);
+
+    $order = Order::create([
+        'user_id' => $user->id,
+        'duration' => 1,
+        'status' => Order::STATUS_PENDING,
+        'total_price' => 80000,
+        'total_fine' => 0,
+    ]);
+
+    OrderDetail::create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 1,
+    ]);
+
+    $this->actingAs($user)->postJson(route('payment.sync', $order), [
+        'transaction_status' => 'settlement',
+    ])->assertOk();
+
+    $order->refresh();
+
+    expect($order->status)->toBe(Order::STATUS_PENDING);
+    expect($order->whatsapp_receipt_send_attempted_at)->toBeNull();
+    expect($order->whatsapp_receipt_sent_at)->toBeNull();
+
+    Http::assertNothingSent();
+});
+
+it('sends whatsapp receipts from browser payment sync after midtrans confirms settlement', function () {
+    config(['services.fonnte.token' => 'test-token']);
+
+    $this->app->bind(MidtransTransactionStatusService::class, fn () => new class extends MidtransTransactionStatusService
+    {
+        public function getStatus(Order $order): ?string
+        {
+            return 'settlement';
+        }
+    });
+
+    Http::fake([
+        'api.fonnte.com/send' => Http::response([
+            'status' => true,
+            'detail' => 'success! message in queue',
+        ]),
+    ]);
+
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+        'name' => 'Sync Summit',
+        'no_hp' => '085774912005',
+    ]);
+
+    $product = Product::create([
+        'name' => 'Flysheet',
+        'description' => 'Pelindung hujan',
+        'price' => 30000,
+        'stock' => 5,
+        'sold' => 0,
+        'image' => 'products/flysheet.jpg',
+    ]);
+
+    $order = Order::create([
+        'user_id' => $user->id,
+        'duration' => 1,
+        'status' => Order::STATUS_PENDING,
+        'total_price' => 30000,
+        'total_fine' => 0,
+    ]);
+
+    OrderDetail::create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 1,
+    ]);
+
+    $this->actingAs($user)->postJson(route('payment.sync', $order), [
+        'transaction_status' => 'settlement',
+    ])->assertOk();
+
+    $order->refresh();
+
+    expect($order->status)->toBe(Order::STATUS_ON_RENT);
+    expect($order->whatsapp_receipt_send_attempted_at)->not->toBeNull();
+    expect($order->whatsapp_receipt_sent_at)->not->toBeNull();
+
+    Http::assertSentCount(1);
+});
+
 it('does not reserve stock again when admin starts a paid rental', function () {
     $admin = User::factory()->create([
         'email_verified_at' => now(),
@@ -292,6 +467,14 @@ it('does not reserve stock again when admin starts a paid rental', function () {
 });
 
 it('starts the rental from snap success callback and shows it in the renting tab', function () {
+    $this->app->bind(MidtransTransactionStatusService::class, fn () => new class extends MidtransTransactionStatusService
+    {
+        public function getStatus(Order $order): ?string
+        {
+            return 'settlement';
+        }
+    });
+
     $user = User::factory()->create([
         'email_verified_at' => now(),
     ]);

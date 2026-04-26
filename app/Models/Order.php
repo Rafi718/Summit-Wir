@@ -30,6 +30,7 @@ class Order extends Model
         'total_fine',
         'snap_token',
         'whatsapp_receipt_sent_at',
+        'whatsapp_receipt_send_attempted_at',
     ];
 
     protected $casts = [
@@ -37,6 +38,7 @@ class Order extends Model
         'return_date' => 'datetime',
         'duration' => 'integer',
         'whatsapp_receipt_sent_at' => 'datetime',
+        'whatsapp_receipt_send_attempted_at' => 'datetime',
     ];
 
     protected $dates = ['loan_date', 'return_date'];

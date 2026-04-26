@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Services\MidtransTransactionStatusService;
 use App\Services\OrderReceiptWhatsappService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,10 @@ use Midtrans\Snap;
 
 class PaymentController extends Controller
 {
-    public function __construct(private readonly OrderReceiptWhatsappService $orderReceiptWhatsappService)
-    {
+    public function __construct(
+        private readonly OrderReceiptWhatsappService $orderReceiptWhatsappService,
+        private readonly MidtransTransactionStatusService $midtransTransactionStatusService,
+    ) {
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = true;
@@ -99,7 +102,11 @@ class PaymentController extends Controller
             'transaction_status' => 'required|string',
         ]);
 
-        $this->applyTransactionStatus($order, $validated['transaction_status']);
+        $verifiedTransactionStatus = $this->midtransTransactionStatusService->getStatus($order);
+
+        if ($verifiedTransactionStatus) {
+            $this->applyTransactionStatus($order, $verifiedTransactionStatus);
+        }
 
         return response()->json([
             'message' => 'Payment status synced',
@@ -134,7 +141,7 @@ class PaymentController extends Controller
         }
     }
 
-    private function applyTransactionStatus(Order $order, string $transactionStatus): void
+    private function applyTransactionStatus(Order $order, string $transactionStatus, bool $sendReceipt = true): void
     {
         $stockWasReserved = $order->hasReservedStock();
 
@@ -153,7 +160,9 @@ class PaymentController extends Controller
                 }
 
                 $order->startRental();
-                $this->orderReceiptWhatsappService->send($order->fresh());
+                if ($sendReceipt) {
+                    $this->orderReceiptWhatsappService->send($order->fresh());
+                }
                 break;
 
             case 'expire':
