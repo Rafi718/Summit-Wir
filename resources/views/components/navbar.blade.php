@@ -131,11 +131,28 @@
             </div>
 
             {{-- Akun --}}
-           <a href="{{ route('profile.index') }}"
-                class="p-2 rounded-full text-gray-600 "
-                title="Profil Saya">
-                    <i class="fas fa-user nav-icon hover:text-green-950"></i>
-            </a>
+            @auth
+                <a href="{{ route('profile.index') }}"
+                    class="flex items-center gap-3 rounded-xl px-3 py-2 transition hover:bg-black/5"
+                    title="Profil Saya">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-black/10">
+                        <i class="fas fa-user nav-icon"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="nav-user-text truncate text-sm font-semibold {{ request()->routeIs('home') ? 'text-white' : 'text-gray-900' }}">
+                            {{ auth()->user()->name }}
+                        </p>
+                        <p class="nav-user-subtext truncate text-xs {{ request()->routeIs('home') ? 'text-white/75' : 'text-gray-500' }}">
+                            {{ auth()->user()->email }}
+                        </p>
+                    </div>
+                </a>
+            @else
+                <a href="{{ route('login') }}"
+                    class="rounded-lg px-4 py-2 text-sm font-medium text-gray-800 transition hover:text-green-950">
+                    Login
+                </a>
+            @endauth
 
         </div>
 
@@ -186,6 +203,8 @@
     const navLinks = document.querySelectorAll('.nav-link');
     const navBrand = document.getElementById('nav-brand');
     const navIcons = document.querySelectorAll('.nav-icon');
+    const navUserTexts = document.querySelectorAll('.nav-user-text');
+    const navUserSubtexts = document.querySelectorAll('.nav-user-subtext');
 
     function handleNavbar() {
         if (window.scrollY > 50) {
@@ -199,6 +218,14 @@
                 icon.classList.remove('text-white');
                 icon.classList.add('text-gray-700');
             });
+            navUserTexts.forEach(text => {
+                text.classList.remove('text-white');
+                text.classList.add('text-gray-900');
+            });
+            navUserSubtexts.forEach(text => {
+                text.classList.remove('text-white/75');
+                text.classList.add('text-gray-500');
+            });
             navBrand.classList.remove('text-white');
             navBrand.classList.add('text-gray-900');
         } else {
@@ -211,6 +238,14 @@
             navIcons.forEach(icon => {
                 icon.classList.add('text-white');
                 icon.classList.remove('text-gray-700');
+            });
+            navUserTexts.forEach(text => {
+                text.classList.add('text-white');
+                text.classList.remove('text-gray-900');
+            });
+            navUserSubtexts.forEach(text => {
+                text.classList.add('text-white/75');
+                text.classList.remove('text-gray-500');
             });
             navBrand.classList.add('text-white');
             navBrand.classList.remove('text-gray-900');
