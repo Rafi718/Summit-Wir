@@ -19,9 +19,9 @@ class OrderController extends Controller
     {
         $orders = Order::with('user')
             ->when($request->filled('status'), function ($query) use ($request) {
-                if ($request->status === 'overdue') {
+                if ($request->status === Order::STATUS_OVERDUE) {
                     $query
-                        ->whereNotIn('status', ['completed', 'cancelled'])
+                        ->whereNotIn('status', [Order::STATUS_COMPLETED, Order::STATUS_CANCELLED])
                         ->whereRaw('DATE_ADD(loan_date, INTERVAL duration DAY) < ?', [now()]);
                 } else {
                     $query->where('status', $request->status);
@@ -72,7 +72,7 @@ class OrderController extends Controller
         $order->status = $validated['status'];
         $order->save();
 
-        if ($validated['status'] === 'on_rent') {
+        if ($validated['status'] === Order::STATUS_ON_RENT) {
             $order->loan_date = now();
             $order->return_date = now()->addDays($order->duration);
             foreach ($order->orderDetails as $detail) {
@@ -86,7 +86,7 @@ class OrderController extends Controller
             return redirect()->route('admin.orders.show', $order->id);
         }
 
-        if ($validated['status'] === 'paid') {
+        if ($validated['status'] === Order::STATUS_PAID) {
             foreach ($order->orderDetails as $detail) {
                 $product = $detail->product;
                 $product->stock -= $detail->quantity;
@@ -99,7 +99,7 @@ class OrderController extends Controller
         }
 
         // Jika status jadi completed, update stock/sold produk
-        if ($validated['status'] === 'completed') {
+        if ($validated['status'] === Order::STATUS_COMPLETED) {
             $order->orderDetails->each(function (OrderDetail $detail) {
                 /** @var \App\Models\Product $product */
                 $product = $detail->product;

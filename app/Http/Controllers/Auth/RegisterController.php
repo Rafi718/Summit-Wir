@@ -29,7 +29,7 @@ class RegisterController extends Controller
         $user = User::create([
             'name' => $credentials['name'],
             'email' => $credentials['email'],
-            'phone' => $credentials['phone'],
+            'no_hp' => $credentials['phone'],
             'password' => Hash::make($credentials['password']),
         ]);
 

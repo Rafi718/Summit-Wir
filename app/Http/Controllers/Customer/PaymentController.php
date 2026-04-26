@@ -85,11 +85,11 @@ class PaymentController extends Controller
 
             switch ($transactionStatus) {
                 case 'pending':
-                    $order->update(['status' => 'pending']);
+                    $order->update(['status' => Order::STATUS_PENDING]);
                     break;
 
                 case 'settlement':
-                    $order->update(['status' => 'paid']);
+                    $order->update(['status' => Order::STATUS_PAID]);
                     // decrease stock
                     foreach ($order->orderDetails as $detail) {
                         $product = $detail->product;
@@ -100,15 +100,15 @@ class PaymentController extends Controller
                     break;
 
                 case 'expire':
-                    $order->update(['status' => 'expired']);
+                    $order->update(['status' => Order::STATUS_EXPIRED]);
                     break;
 
                 case 'cancel':
-                    $order->update(['status' => 'cancelled']);
+                    $order->update(['status' => Order::STATUS_CANCELLED]);
                     break;
 
                 case 'deny':
-                    $order->update(['status' => 'failed']);
+                    $order->update(['status' => Order::STATUS_FAILED]);
                     break;
 
                 default:
@@ -134,13 +134,13 @@ class PaymentController extends Controller
         }
 
         switch ($order->status) {
-            case 'paid':
+            case Order::STATUS_PAID:
                 return view('customer.payment-success', compact('order'));
-            case 'pending':
+            case Order::STATUS_PENDING:
                 return view('customer.payment-pending', compact('order'));
-            case 'failed':
-            case 'expired':
-            case 'canceled':
+            case Order::STATUS_FAILED:
+            case Order::STATUS_EXPIRED:
+            case Order::STATUS_CANCELLED:
                 return view('customer.payment-failed', compact('order'));
             default:
                 return redirect()->route('profile.index')->with('error', 'Status pembayaran tidak diketahui.');

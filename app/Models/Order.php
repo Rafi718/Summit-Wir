@@ -11,6 +11,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_PAID = 'paid';
+    public const STATUS_ON_RENT = 'on_rent';
+    public const STATUS_OVERDUE = 'overdue';
+    public const STATUS_COMPLETED = 'completed';
+    public const STATUS_CANCELLED = 'cancelled';
+    public const STATUS_FAILED = 'failed';
+    public const STATUS_EXPIRED = 'expired';
+
     protected $fillable = [
         'user_id',
         'loan_date',
@@ -32,23 +41,34 @@ class Order extends Model
 
     protected $appends = ['displayStatus'];
 
+    public static function canonicalizeStatus(?string $status): ?string
+    {
+        return match ($status) {
+            'confirmed' => self::STATUS_PAID,
+            'canceled' => self::STATUS_CANCELLED,
+            default => $status,
+        };
+    }
+
     public function getDisplayStatusAttribute()
     {
-        // If already returned or cancelled, use stored status
-        if (in_array($this->status, ['completed', 'cancelled'])) {
-            return $this->status;
+        $status = self::canonicalizeStatus($this->status);
+
+        if (in_array($status, [self::STATUS_COMPLETED, self::STATUS_CANCELLED, self::STATUS_FAILED, self::STATUS_EXPIRED])) {
+            return $status;
         }
 
-        // Compute due date
+        if ($status !== self::STATUS_ON_RENT || !$this->loan_date) {
+            return $status;
+        }
+
         $dueDate = Carbon::parse($this->loan_date)->addDays((int) $this->duration);
 
-        // Check if overdue
         if (now()->greaterThan($dueDate)) {
-            return 'overdue';
+            return self::STATUS_OVERDUE;
         }
 
-        // Otherwise use the stored status (Pending, Confirmed, etc.)
-        return $this->status;
+        return $status;
     }
 
     public function user(): BelongsTo

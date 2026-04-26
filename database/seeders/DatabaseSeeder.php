@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         $userCount = 20; // Change this to any number
         $productsPerCategory = 10;
         $categoriesList = ['Tents', 'Backpacks', 'Cooking Gear', 'Clothing', 'Lighting'];
-        $statuses = ['pending', 'confirmed', 'on_rent', 'cancelled', 'completed'];
+        $statuses = ['pending', 'paid', 'on_rent', 'cancelled', 'completed'];
 
         // 🧍 Create Admin
         $admin = User::create([
@@ -55,6 +55,14 @@ class DatabaseSeeder extends Seeder
         // 🏕️ Create Categories
         $categories = collect($categoriesList)->map(fn($cat) => Category::create(['category' => $cat]));
 
+        $categoryImages = [
+            'Tents' => 'products/tents.jpg',
+            'Backpacks' => 'products/backpacks.jpg',
+            'Cooking Gear' => 'products/cooking-gear.jpg',
+            'Clothing' => 'products/clothing.jpg',
+            'Lighting' => 'products/lighting.jpg',
+        ];
+
         // 🎒 Create Products
         $products = collect();
         foreach ($categories as $category) {
@@ -66,7 +74,7 @@ class DatabaseSeeder extends Seeder
                         'description' => "Durable and reliable {$category->category} item for mountain use.",
                         'price' => rand(50000, 150000),
                         'stock' => rand(5, 20),
-                        'image' => 'products/product.jpg',
+                        'image' => $categoryImages[$category->category] ?? 'products/tents.jpg',
                     ]),
                 );
             }

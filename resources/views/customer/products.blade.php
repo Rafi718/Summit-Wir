@@ -27,11 +27,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     
                     @forelse($products as $product)
-                        <div class="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group"
+                        <div class="bg-white shadow-md rounded-xl overflow-hidden transition-all duration-300 cursor-pointer group"
                             onclick="window.location.href='{{ route('product.detail', $product->id) }}'">
-                            <div class="overflow-hidden">
+                            <div class="aspect-square overflow-hidden bg-gray-50">
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                                    class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
+                                    class="w-full h-full object-contain">
                             </div>
 
                             <div class="p-4 text-left">
@@ -39,7 +39,7 @@
                                     {{ $product->name }}
                                 </h3>
                                 <p class="text-gray-500 text-sm mb-2">{{ $product->category->category ?? 'Umum' }}</p>
-                                <p class="text-black-600 font-bold mb-1 group-hover:scale-105 inline-block transition-transform duration-300">
+                                <p class="text-black-600 font-bold mb-1">
                                     Rp {{ number_format($product->price, 0, ',', '.') }}
                                 </p>
 

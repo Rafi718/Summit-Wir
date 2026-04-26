@@ -41,6 +41,56 @@
     {{-- Navbar --}}
     @includeIf('components.navbar')
 
+    <div class="fixed top-24 right-4 z-[60] space-y-3 pointer-events-none">
+        @if (session('success'))
+            <div
+                class="flash-toast pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border border-green-200 bg-white px-4 py-3 shadow-lg transition-all duration-300"
+                role="status"
+                data-flash-toast
+            >
+                <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="text-sm font-semibold text-gray-900">Berhasil</p>
+                    <p class="text-sm text-gray-600">{{ session('success') }}</p>
+                </div>
+                <button
+                    type="button"
+                    class="rounded-md p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+                    aria-label="Tutup notifikasi"
+                    data-flash-toast-close
+                >
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div
+                class="flash-toast pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border border-red-200 bg-white px-4 py-3 shadow-lg transition-all duration-300"
+                role="alert"
+                data-flash-toast
+            >
+                <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+                    <i class="fas fa-circle-exclamation"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="text-sm font-semibold text-gray-900">Perhatian</p>
+                    <p class="text-sm text-gray-600">{{ session('error') }}</p>
+                </div>
+                <button
+                    type="button"
+                    class="rounded-md p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+                    aria-label="Tutup notifikasi"
+                    data-flash-toast-close
+                >
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        @endif
+    </div>
+
     <main class="flex-grow">
         @yield('content')
     </main>
@@ -67,6 +117,19 @@
                     'shadow-md'
                 );
             }
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('[data-flash-toast]').forEach((toast) => {
+            const closeButton = toast.querySelector('[data-flash-toast-close]');
+            const hideToast = () => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            };
+
+            closeButton?.addEventListener('click', hideToast);
+            setTimeout(hideToast, 3000);
         });
     </script>
 
