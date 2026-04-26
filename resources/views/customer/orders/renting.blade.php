@@ -127,7 +127,7 @@
 
                                     {{-- Tombol --}}
                                     <div class="flex flex-col sm:flex-row gap-2">
-                                        <button class="flex-1 px-5 py-2.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition">
+                                        <button class="flex-1 px-5 py-2.5 bg-green-950 text-white text-sm font-medium rounded-lg hover:bg-green-900 transition">
                                             Konfirmasi Pembalian
                                         </button>
                                     </div>

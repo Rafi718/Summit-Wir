@@ -56,8 +56,8 @@
                 <p class="text-gray-400">WhatsApp Kami</p>
 
                 <div class="flex items-center gap-3">
-                    <i class="fa-brands fa-whatsapp text-2xl text-green-500"></i>
-                    <p class="text-green-500 text-lg font-semibold">0878 1200 0155</p>
+                    <i class="fa-brands fa-whatsapp text-2xl text-green-100"></i>
+                    <p class="text-green-100 text-lg font-semibold">0878 1200 0155</p>
                 </div>
             </div>
 

@@ -11,9 +11,9 @@
 
         {{-- Menu tengah --}}
         <ul class="hidden md:flex space-x-8 font-medium absolute left-1/2 transform -translate-x-1/2">
-            <li><a href="{{ route('home') }}" class="nav-link transition{{ request()->routeIs('home') ? 'text-white hover:text-green-400' : 'text-gray-800 hover:text-green-600' }}">Home</a></li>
-            <li><a href="{{ route('products') }}" class="nav-link transition{{ request()->routeIs('home') ? 'text-white hover:text-green-400' : 'text-gray-800 hover:text-green-600' }}">Products</a></li>  
-            <li><a href="{{ route('guide') }}" class="nav-link transition{{ request()->routeIs('home') ? 'text-white hover:text-green-400' : 'text-gray-800 hover:text-green-600' }}">Guide</a></li>
+            <li><a href="{{ route('home') }}" class="nav-link transition{{ request()->routeIs('home') ? 'text-white hover:text-green-100' : 'text-gray-800 hover:text-green-950' }}">Home</a></li>
+            <li><a href="{{ route('products') }}" class="nav-link transition{{ request()->routeIs('home') ? 'text-white hover:text-green-100' : 'text-gray-800 hover:text-green-950' }}">Products</a></li>  
+            <li><a href="{{ route('guide') }}" class="nav-link transition{{ request()->routeIs('home') ? 'text-white hover:text-green-100' : 'text-gray-800 hover:text-green-950' }}">Guide</a></li>
         </ul>
 
         {{-- Bagian kanan: Keranjang & Account --}}
@@ -22,7 +22,7 @@
             {{-- Hover Keranjang --}}
             <div class="relative cart-hover-container">
                 <a href="{{ route('cart') }}"
-                    class="nav-icon relative p-2 rounded-full transition hover:text-green-600"
+                    class="nav-icon relative p-2 rounded-full transition hover:text-green-950"
                         title="Keranjang">
                             <i class="fas fa-shopping-cart"></i>
                             @php
@@ -134,7 +134,7 @@
            <a href="{{ route('profile.index') }}"
                 class="p-2 rounded-full text-gray-600 "
                 title="Profil Saya">
-                    <i class="fas fa-user nav-icon hover:text-green-600"></i>
+                    <i class="fas fa-user nav-icon hover:text-green-950"></i>
             </a>
 
             {{-- Tombol Logout --}}
@@ -207,8 +207,8 @@
             navbar.classList.remove('bg-transparent');
             navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-md');
             navLinks.forEach(link => {
-                link.classList.remove('text-white', 'hover:text-green-400');
-                link.classList.add('text-gray-800', 'hover:text-green-600');
+                link.classList.remove('text-white', 'hover:text-green-100');
+                link.classList.add('text-gray-800', 'hover:text-green-950');
             });
             navIcons.forEach(icon => {
                 icon.classList.remove('text-white');
@@ -220,8 +220,8 @@
             navbar.classList.add('bg-transparent');
             navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-md');
             navLinks.forEach(link => {
-                link.classList.add('text-white', 'hover:text-green-400');
-                link.classList.remove('text-gray-800', 'hover:text-green-600');
+                link.classList.add('text-white', 'hover:text-green-100');
+                link.classList.remove('text-gray-800', 'hover:text-green-950');
             });
             navIcons.forEach(icon => {
                 icon.classList.add('text-white');

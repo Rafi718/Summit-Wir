@@ -97,7 +97,7 @@
                                                 @endif
                                             </h3>
                                         </div>
-                                        <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded whitespace-nowrap">
+                                        <span class="px-3 py-1 bg-green-50 text-green-950 text-xs font-medium rounded whitespace-nowrap">
                                             Selesai
                                         </span>
                                     </div>

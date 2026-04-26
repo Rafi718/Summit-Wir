@@ -54,7 +54,7 @@
                 <span class="truncate">Pesanan Selesai</span>
             </div>
             @if(isset($completedCount) && $completedCount > 0)
-                <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full flex-shrink-0">{{ $completedCount }}</span>
+                <span class="bg-green-950 text-white text-xs px-2 py-1 rounded-full flex-shrink-0">{{ $completedCount }}</span>
             @endif
         </a>
 

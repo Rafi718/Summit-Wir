@@ -12,7 +12,7 @@
             <div>
                 <label for="category" class="block text-gray-700 font-medium mb-1">Apa yang kamu cari?</label>
                 <select name="category" id="category" onchange="this.form.submit()"
-                    class="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-64 focus:ring-2 focus:ring-green-500 ">
+                    class="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-64 focus:ring-2 focus:ring-green-950 ">
                     <option value="">Semua Kategori</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
@@ -35,7 +35,7 @@
                             </div>
 
                             <div class="p-4 text-left">
-                                <h3 class="text-lg font-semibold text-gray-800 truncate group-hover:text-green-600 transition-colors duration-300">
+                                <h3 class="text-lg font-semibold text-gray-800 truncate group-hover:text-green-950 transition-colors duration-300">
                                     {{ $product->name }}
                                 </h3>
                                 <p class="text-gray-500 text-sm mb-2">{{ $product->category->category ?? 'Umum' }}</p>
@@ -61,7 +61,7 @@
                                         onclick="event.stopPropagation()">
                                         @csrf
                                         <button type="submit"
-                                            class="text-sm text-gray-600 border border-black-600 hover:bg-green-600 hover:text-white hover:scale-105 px-3 py-1.5 rounded-lg transition-all duration-300 transform active:scale-95">
+                                            class="text-sm text-gray-600 border border-black-600 hover:bg-green-950 hover:text-white hover:scale-105 px-3 py-1.5 rounded-lg transition-all duration-300 transform active:scale-95">
                                             + Keranjang
                                         </button>
                                     </form>

@@ -14,7 +14,7 @@
                 <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight scroll-animate slow">
             Siap Naik Gunung? <br>
             Sewa Perlengkapan Outdoor Terbaik di 
-            <span class="text-green-400 ">SummitWir</span>
+            <span class="text-green-100 ">SummitWir</span>
         </h1>
 
         <p class="text-lg md:text-xl mb-6 text-gray-200 max-w-2xl scroll-animate delay-3">
@@ -55,7 +55,7 @@
                             </div>
 
                             <div class="p-4 text-left">
-                                <h3 class="text-lg font-semibold text-gray-800 truncate group-hover:text-green-600 transition-colors duration-300">
+                                <h3 class="text-lg font-semibold text-gray-800 truncate group-hover:text-green-950 transition-colors duration-300">
                                     {{ $product->name }}
                                 </h3>
                                 <p class="text-gray-500 text-sm mb-2">{{ $product->category->category ?? 'Umum' }}</p>
@@ -81,7 +81,7 @@
                                         onclick="event.stopPropagation()">
                                         @csrf
                                         <button type="submit"
-                                            class="text-sm text-gray-600 border border-black-600 hover:bg-green-600 hover:text-white hover:scale-105 px-3 py-1.5 rounded-lg transition-all duration-300 transform active:scale-95">
+                                            class="text-sm text-gray-600 border border-black-600 hover:bg-green-950 hover:text-white hover:scale-105 px-3 py-1.5 rounded-lg transition-all duration-300 transform active:scale-95">
                                             + Keranjang
                                         </button>
                                     </form>
@@ -96,7 +96,7 @@
             {{-- Tombol ke semua produk --}}
             <div class="mt-12">
                 <a href="{{ route('products') }}"
-                    class="px-6 py-3 bg-green-600 hover:bg-gray-700 rounded-lg text-white font-medium shadow-md transition scroll-animate slow">
+                    class="px-6 py-3 bg-green-950 hover:bg-green-900 rounded-lg text-white font-medium shadow-md transition scroll-animate slow">
                     Lihat Lainnya
                 </a>
             </div>
