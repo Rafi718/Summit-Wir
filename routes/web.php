@@ -100,6 +100,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // ==================== ORDERS ROUTES ====================
     Route::get('/profile/orders/pending', [ProfileController::class, 'pendingOrders'])->name('profile.orders.pending');
     Route::get('/profile/orders/renting', [ProfileController::class, 'rentingOrders'])->name('profile.orders.renting');
+    Route::put('/profile/orders/{order}/return', [ProfileController::class, 'returnOrder'])->name('profile.orders.return');
     Route::get('/profile/orders/completed', [ProfileController::class, 'completedOrders'])->name(
         'profile.orders.completed',
     );
@@ -120,6 +121,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/checkout/direct/{product}', [CheckoutController::class, 'directCheckout'])->name('checkout.direct');
     Route::delete('/checkout/cancel/{order}', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
     Route::post('/payment/pay/{order}', [PaymentController::class, 'pay'])->name('payment.pay');
+    Route::post('/payment/sync/{order}', [PaymentController::class, 'sync'])->name('payment.sync');
     Route::get('/payment/status/{order}', [PaymentController::class, 'status'])->name('payment.status');
 });
 

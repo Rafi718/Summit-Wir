@@ -44,10 +44,9 @@
                         <div>
                             <label class="block text-sm mb-1">Durasi (hari)</label>
                             <select name="duration" class="border rounded px-2 py-1 w-full">
-                                <option value="1">1 Hari</option>
-                                <option value="2">2 Hari</option>
-                                <option value="3">3 Hari</option>
-                                <option value="4">4 Hari</option>
+                                @for ($day = 1; $day <= 14; $day++)
+                                    <option value="{{ $day }}">{{ $day }} Hari</option>
+                                @endfor
                             </select>
                         </div>
 

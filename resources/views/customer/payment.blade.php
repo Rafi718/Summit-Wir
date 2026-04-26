@@ -20,16 +20,37 @@
     <script src="/assets/js/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
 
     <script>
+        const syncPaymentStatus = async (result) => {
+            await fetch("{{ route('payment.sync', $order) }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                },
+                body: JSON.stringify({
+                    transaction_status: result.transaction_status || 'pending',
+                }),
+            });
+        };
+
+        const goToPaymentStatus = () => {
+            window.location.href = "{{ route('payment.status', ['order' => $order->id]) }}";
+        };
+
         document.getElementById('pay-button').addEventListener('click', function() {
             window.snap.pay('{{ $snapToken }}', {
-                onSuccess: function(result) {
-                    window.location.href = "{{ route('payment.status', ['order' => $order->id]) }}";
+                onSuccess: async function(result) {
+                    await syncPaymentStatus(result);
+                    goToPaymentStatus();
                 },
-                onPending: function(result) {
-                    window.location.href = "{{ route('payment.status', ['order' => $order->id]) }}";
+                onPending: async function(result) {
+                    await syncPaymentStatus(result);
+                    goToPaymentStatus();
                 },
-                onError: function(result) {
-                    window.location.href = "{{ route('payment.status', ['order' => $order->id]) }}";
+                onError: async function(result) {
+                    await syncPaymentStatus(result);
+                    goToPaymentStatus();
                 },
                 onClose: function() {
                     //

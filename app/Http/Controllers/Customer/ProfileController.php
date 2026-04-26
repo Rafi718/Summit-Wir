@@ -95,6 +95,22 @@ class ProfileController extends Controller
         return view('customer.orders.renting', compact('orders'));
     }
 
+    public function returnOrder(Order $order)
+    {
+        abort_if($order->user_id !== Auth::id(), 403);
+
+        if ($order->status !== Order::STATUS_ON_RENT) {
+            return back()->with('error', 'Order ini belum berada dalam status sedang disewa.');
+        }
+
+        $order->releaseStock();
+        $order->completeRental();
+
+        return redirect()
+            ->route('profile.orders.completed')
+            ->with('success', 'Pengembalian barang berhasil dikonfirmasi.');
+    }
+
     public function completedOrders()
     {
         $orders = Order::where('user_id', Auth::id())

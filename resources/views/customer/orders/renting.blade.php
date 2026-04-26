@@ -127,9 +127,15 @@
 
                                     {{-- Tombol --}}
                                     <div class="flex flex-col sm:flex-row gap-2">
-                                        <button class="flex-1 px-5 py-2.5 bg-green-950 text-white text-sm font-medium rounded-lg hover:bg-green-900 transition">
-                                            Konfirmasi Pembalian
-                                        </button>
+                                        <form action="{{ route('profile.orders.return', $order) }}" method="POST" class="flex-1">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit"
+                                                onclick="return confirm('Konfirmasi barang pesanan ini sudah dikembalikan?')"
+                                                class="w-full px-5 py-2.5 bg-green-950 text-white text-sm font-medium rounded-lg hover:bg-green-900 transition">
+                                                Konfirmasi Pengembalian
+                                            </button>
+                                        </form>
                                     </div>
 
                                 </div>

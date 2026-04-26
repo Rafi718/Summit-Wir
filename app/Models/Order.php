@@ -71,6 +71,60 @@ class Order extends Model
         return $status;
     }
 
+    public function hasReservedStock(): bool
+    {
+        return in_array(self::canonicalizeStatus($this->status), [
+            self::STATUS_PAID,
+            self::STATUS_ON_RENT,
+            self::STATUS_OVERDUE,
+        ], true);
+    }
+
+    public function reserveStock(): void
+    {
+        $this->loadMissing('orderDetails.product');
+
+        foreach ($this->orderDetails as $detail) {
+            if (!$detail->product) {
+                continue;
+            }
+
+            $detail->product->decrement('stock', $detail->quantity);
+            $detail->product->increment('sold', $detail->quantity);
+        }
+    }
+
+    public function releaseStock(): void
+    {
+        $this->loadMissing('orderDetails.product');
+
+        foreach ($this->orderDetails as $detail) {
+            if (!$detail->product) {
+                continue;
+            }
+
+            $detail->product->increment('stock', $detail->quantity);
+        }
+    }
+
+    public function startRental(?Carbon $startedAt = null): void
+    {
+        $loanDate = $this->loan_date ?: ($startedAt ?? now());
+
+        $this->forceFill([
+            'status' => self::STATUS_ON_RENT,
+            'loan_date' => $loanDate,
+            'return_date' => Carbon::parse($loanDate)->addDays((int) $this->duration),
+        ])->save();
+    }
+
+    public function completeRental(): void
+    {
+        $this->forceFill([
+            'status' => self::STATUS_COMPLETED,
+        ])->save();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class)->withTrashed();

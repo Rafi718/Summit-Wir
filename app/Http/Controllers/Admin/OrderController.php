@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Order;
-use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -63,52 +62,62 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        // Validasi hanya untuk status
         $validated = $request->validate([
-            'status' => 'required|string|in:pending,paid,on_rent,overdue,completed,cancelled,failed',
+            'status' => 'required|string|in:pending,paid,on_rent,overdue,completed,cancelled,failed,expired',
         ]);
 
-        // Update status
-        $order->status = $validated['status'];
-        $order->save();
+        $previousStatus = Order::canonicalizeStatus($order->status);
+        $nextStatus = Order::canonicalizeStatus($validated['status']);
+        $stockWasReserved = $order->hasReservedStock();
 
-        if ($validated['status'] === Order::STATUS_ON_RENT) {
-            $order->loan_date = now();
-            $order->return_date = now()->addDays($order->duration);
-            foreach ($order->orderDetails as $detail) {
-                $product = $detail->product;
-                $product->stock -= $detail->quantity;
-                $product->sold += $detail->quantity;
-                $product->save();
+        if ($nextStatus === Order::STATUS_PAID) {
+            if (!$stockWasReserved) {
+                $order->reserveStock();
             }
 
-            $order->save();
-            return redirect()->route('admin.orders.show', $order->id);
+            $order->update(['status' => Order::STATUS_PAID]);
+
+            return redirect()
+                ->route('admin.orders.show', $order->id)
+                ->with('success', 'Status order berhasil diperbarui.');
         }
 
-        if ($validated['status'] === Order::STATUS_PAID) {
-            foreach ($order->orderDetails as $detail) {
-                $product = $detail->product;
-                $product->stock -= $detail->quantity;
-                $product->sold += $detail->quantity;
-                $product->save();
+        if ($nextStatus === Order::STATUS_ON_RENT) {
+            if (!$stockWasReserved) {
+                $order->reserveStock();
             }
 
-            $order->save();
-            return redirect()->route('admin.orders.show', $order->id);
+            $order->startRental();
+
+            return redirect()
+                ->route('admin.orders.show', $order->id)
+                ->with('success', 'Status order berhasil diperbarui.');
         }
 
-        // Jika status jadi completed, update stock/sold produk
-        if ($validated['status'] === Order::STATUS_COMPLETED) {
-            $order->orderDetails->each(function (OrderDetail $detail) {
-                /** @var \App\Models\Product $product */
-                $product = $detail->product;
+        if ($nextStatus === Order::STATUS_COMPLETED) {
+            if ($stockWasReserved) {
+                $order->releaseStock();
+            }
 
-                $product->sold += $detail->quantity;
-                $product->save();
-            });
+            $order->completeRental();
+
+            return redirect()
+                ->route('admin.orders.show', $order->id)
+                ->with('success', 'Status order berhasil diperbarui.');
         }
 
-        return redirect()->back()->with('success', 'Status order berhasil diperbarui.');
+        if (
+            in_array($nextStatus, [Order::STATUS_CANCELLED, Order::STATUS_FAILED, Order::STATUS_EXPIRED], true)
+            && $stockWasReserved
+            && $previousStatus !== $nextStatus
+        ) {
+            $order->releaseStock();
+        }
+
+        $order->update(['status' => $nextStatus]);
+
+        return redirect()
+            ->route('admin.orders.show', $order->id)
+            ->with('success', 'Status order berhasil diperbarui.');
     }
 }

@@ -70,10 +70,10 @@
                             </p>
                         @endif
                         <p class="text-sm text-gray-600 dark:text-gray-300"><span class="font-medium">Tanggal Peminjaman:
-                                {{ \Carbon\Carbon::parse($order->loan_date)->translatedFormat('H:i:s, d F Y') }}
+                                {{ $order->loan_date ? $order->loan_date->translatedFormat('H:i:s, d F Y') : 'Belum mulai' }}
                         </p>
                         <p class="text-sm text-gray-600 dark:text-gray-300"><span class="font-medium">Tanggal Pengembalian:
-                                {{ \Carbon\Carbon::parse($order->return_date)->translatedFormat('H:i:s, d F Y') }}</p>
+                                {{ $order->return_date ? $order->return_date->translatedFormat('H:i:s, d F Y') : 'Belum ditentukan' }}</p>
                     </div>
 
                 </div>

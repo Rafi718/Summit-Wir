@@ -106,7 +106,7 @@
                                     <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
                                         <div>
                                             <p class="text-gray-500 text-xs mb-1">Tanggal Order</p>
-                                            <p class="font-semibold text-gray-900">{{ \Carbon\Carbon::parse($order->loan_date)->format('d M Y') }}</p>
+                                            <p class="font-semibold text-gray-900">{{ $order->created_at->format('d M Y') }}</p>
                                         </div>
                                         <div>
                                             <p class="text-gray-500 text-xs mb-1">Durasi</p>

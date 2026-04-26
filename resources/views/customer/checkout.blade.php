@@ -43,8 +43,21 @@
 
             {{-- Duration --}}
             <div class="mb-6">
-                <h2 class="text-lg font-semibold mb-2">Durasi</h2>
-                <p>Durasi: <strong>{{ $order->duration }} hari</strong></p>
+                <h2 class="text-lg font-semibold mb-2">Jadwal Sewa</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+                    <div class="rounded-lg border border-gray-200 p-3">
+                        <p class="text-gray-500">Durasi</p>
+                        <p class="font-semibold text-gray-900">{{ $order->duration }} hari</p>
+                    </div>
+                    <div class="rounded-lg border border-gray-200 p-3">
+                        <p class="text-gray-500">Mulai Sewa</p>
+                        <p class="font-semibold text-gray-900">Saat barang diambil</p>
+                    </div>
+                    <div class="rounded-lg border border-gray-200 p-3">
+                        <p class="text-gray-500">Jatuh Tempo</p>
+                        <p class="font-semibold text-gray-900">{{ $order->duration }} hari setelah pengambilan</p>
+                    </div>
+                </div>
             </div>
 
             {{-- Total --}}

@@ -81,46 +81,29 @@ class PaymentController extends Controller
                 return response()->json(['message' => 'Order not found'], 404);
             }
 
-            $transactionStatus = $data['transaction_status'];
-
-            switch ($transactionStatus) {
-                case 'pending':
-                    $order->update(['status' => Order::STATUS_PENDING]);
-                    break;
-
-                case 'settlement':
-                    $order->update(['status' => Order::STATUS_PAID]);
-                    // decrease stock
-                    foreach ($order->orderDetails as $detail) {
-                        $product = $detail->product;
-                        $product->stock -= $detail->quantity;
-                        $product->sold += $detail->quantity;
-                        $product->save();
-                    }
-                    break;
-
-                case 'expire':
-                    $order->update(['status' => Order::STATUS_EXPIRED]);
-                    break;
-
-                case 'cancel':
-                    $order->update(['status' => Order::STATUS_CANCELLED]);
-                    break;
-
-                case 'deny':
-                    $order->update(['status' => Order::STATUS_FAILED]);
-                    break;
-
-                default:
-                    Log::warning("Unhandled Midtrans status: {$transactionStatus}");
-                    break;
-            }
+            $this->applyTransactionStatus($order, $data['transaction_status']);
 
             return response()->json(['message' => 'Notification processed']);
         } catch (\Exception $e) {
             Log::error('Midtrans QRIS Notification Error:', ['error' => $e->getMessage()]);
             return response()->json(['message' => 'Internal Server Error'], 500);
         }
+    }
+
+    public function sync(Request $request, Order $order)
+    {
+        abort_if($order->user_id !== Auth::id(), 403);
+
+        $validated = $request->validate([
+            'transaction_status' => 'required|string',
+        ]);
+
+        $this->applyTransactionStatus($order, $validated['transaction_status']);
+
+        return response()->json([
+            'message' => 'Payment status synced',
+            'status' => $order->fresh()->status,
+        ]);
     }
 
     /**
@@ -135,6 +118,7 @@ class PaymentController extends Controller
 
         switch ($order->status) {
             case Order::STATUS_PAID:
+                $order->load('orderDetails.product');
                 return view('customer.payment-success', compact('order'));
             case Order::STATUS_PENDING:
                 return view('customer.payment-pending', compact('order'));
@@ -144,6 +128,57 @@ class PaymentController extends Controller
                 return view('customer.payment-failed', compact('order'));
             default:
                 return redirect()->route('profile.index')->with('error', 'Status pembayaran tidak diketahui.');
+        }
+    }
+
+    private function applyTransactionStatus(Order $order, string $transactionStatus): void
+    {
+        $stockWasReserved = $order->hasReservedStock();
+
+        switch ($transactionStatus) {
+            case 'pending':
+                if (!$stockWasReserved) {
+                    $order->update(['status' => Order::STATUS_PENDING]);
+                }
+
+                break;
+
+            case 'capture':
+            case 'settlement':
+                if (!$stockWasReserved) {
+                    $order->reserveStock();
+                }
+
+                $order->update(['status' => Order::STATUS_PAID]);
+                break;
+
+            case 'expire':
+                if ($stockWasReserved) {
+                    $order->releaseStock();
+                }
+
+                $order->update(['status' => Order::STATUS_EXPIRED]);
+                break;
+
+            case 'cancel':
+                if ($stockWasReserved) {
+                    $order->releaseStock();
+                }
+
+                $order->update(['status' => Order::STATUS_CANCELLED]);
+                break;
+
+            case 'deny':
+                if ($stockWasReserved) {
+                    $order->releaseStock();
+                }
+
+                $order->update(['status' => Order::STATUS_FAILED]);
+                break;
+
+            default:
+                Log::warning("Unhandled Midtrans status: {$transactionStatus}");
+                break;
         }
     }
 }
