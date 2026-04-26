@@ -112,20 +112,20 @@
                 </h2>
 
                 <p class="text-gray-600 text-base mb-10 max-w-2xl leading-relaxed text-center mx-auto scroll-animate delay-3">
-                    Jl. Jend. Wito No.38, RT.2/RW.2, Brato, Kec. Boloktotono,
-                    Kota Saranjana, Jawa Selatan 12150
+                    Jl. DI Panjaitan No.128, Karangreja, Purwokerto Kidul, Kec. Purwokerto Sel.,
+                    Kabupaten Banyumas, Jawa Tengah 53147
                 </p>
 
                 <!-- MAP -->
                 <div class="w-full max-w-5xl h-[460px] mx-auto rounded-2xl overflow-hidden shadow-lg border border-gray-200 scroll-animate delay-4">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d6013.879258367039!2d109.25366701884879!3d-7.435860572927334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sid!2sid!4v1762736551342!5m2!1sid!2sid"
+                        src="https://www.google.com/maps?q=Jl.%20DI%20Panjaitan%20No.128%2C%20Karangreja%2C%20Purwokerto%20Kidul%2C%20Kec.%20Purwokerto%20Sel.%2C%20Kabupaten%20Banyumas%2C%20Jawa%20Tengah%2053147&output=embed"
                         class="w-full h-full border-0"
                         allowfullscreen>
                     </iframe>
                 </div>
 
-                <a href="https://maps.app.goo.gl/qs2u7yhFtp7wfFF57"
+                <a href="https://www.google.com/maps/search/?api=1&query=Jl.%20DI%20Panjaitan%20No.128%2C%20Karangreja%2C%20Purwokerto%20Kidul%2C%20Kec.%20Purwokerto%20Sel.%2C%20Kabupaten%20Banyumas%2C%20Jawa%20Tengah%2053147"
                 target="_blank"
                 class="mt-6 text-sm font-medium text-blue-600 hover:text-blue-700">
                     Lihat di Google Maps →
