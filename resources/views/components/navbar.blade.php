@@ -149,7 +149,8 @@
                 </a>
             @else
                 <a href="{{ route('login') }}"
-                    class="rounded-lg px-4 py-2 text-sm font-medium text-gray-800 transition hover:text-green-950">
+                    class="nav-login-pill rounded-full px-5 py-2.5 text-sm font-semibold shadow-sm ring-1 transition
+                    {{ request()->routeIs('home') ? 'bg-white/12 text-white ring-white/20 backdrop-blur-sm hover:bg-white/20' : 'bg-green-950 text-white ring-green-950/10 hover:bg-green-900' }}">
                     Login
                 </a>
             @endauth
@@ -205,6 +206,7 @@
     const navIcons = document.querySelectorAll('.nav-icon');
     const navUserTexts = document.querySelectorAll('.nav-user-text');
     const navUserSubtexts = document.querySelectorAll('.nav-user-subtext');
+    const navLoginPills = document.querySelectorAll('.nav-login-pill');
 
     function handleNavbar() {
         if (window.scrollY > 50) {
@@ -228,6 +230,10 @@
             });
             navBrand.classList.remove('text-white');
             navBrand.classList.add('text-gray-900');
+            navLoginPills.forEach(button => {
+                button.classList.remove('bg-white/12', 'text-white', 'ring-white/20', 'backdrop-blur-sm', 'hover:bg-white/20');
+                button.classList.add('bg-green-950', 'text-white', 'ring-green-950/10', 'hover:bg-green-900', 'shadow-sm');
+            });
         } else {
             navbar.classList.add('bg-transparent');
             navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-md');
@@ -249,6 +255,10 @@
             });
             navBrand.classList.add('text-white');
             navBrand.classList.remove('text-gray-900');
+            navLoginPills.forEach(button => {
+                button.classList.add('bg-white/12', 'text-white', 'ring-white/20', 'backdrop-blur-sm', 'hover:bg-white/20', 'shadow-sm');
+                button.classList.remove('bg-green-950', 'ring-green-950/10', 'hover:bg-green-900');
+            });
         }
     }
 

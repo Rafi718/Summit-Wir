@@ -39,10 +39,11 @@ Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'register')->name('register');
     Route::post('/register', 'handleRegister')->name('register.post');
     Route::get('/email/verify', 'verification')->middleware('auth')->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', 'verify')
-        ->middleware(['auth', 'signed'])
-        ->name('verification.verify');
-    Route::post('/email/verification-notification', 'resendVerification')
+    Route::get('/whatsapp/verify', 'verification')->middleware('auth')->name('whatsapp.verification.notice');
+    Route::post('/whatsapp/verify', 'verifyWhatsapp')
+        ->middleware('auth')
+        ->name('whatsapp.verification.verify');
+    Route::post('/whatsapp/verification-notification', 'resendVerification')
         ->middleware(['auth', 'throttle:6,1'])
         ->name('verification.send');
 });
