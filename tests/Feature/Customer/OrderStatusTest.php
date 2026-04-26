@@ -287,3 +287,106 @@ it('starts the rental from snap success callback and shows it in the renting tab
         ->and($product->fresh()->stock)->toBe(6)
         ->and($product->fresh()->sold)->toBe(1);
 });
+
+it('shows a printable rental invoice for the order owner', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+        'name' => 'Sans Line',
+        'no_hp' => '081234567890',
+    ]);
+
+    $product = Product::create([
+        'name' => 'Tenda Ultralight',
+        'description' => 'Tenda ringan',
+        'price' => 60000,
+        'stock' => 2,
+        'sold' => 1,
+        'image' => 'products/tents.jpg',
+    ]);
+
+    $order = Order::create([
+        'user_id' => $user->id,
+        'loan_date' => now(),
+        'return_date' => now()->addDays(3),
+        'duration' => 3,
+        'status' => Order::STATUS_ON_RENT,
+        'total_price' => 180000,
+        'total_fine' => 0,
+    ]);
+
+    OrderDetail::create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 1,
+    ]);
+
+    $response = $this->actingAs($user)->get(route('profile.orders.invoice', $order));
+
+    $response
+        ->assertOk()
+        ->assertViewIs('customer.orders.invoice')
+        ->assertSee('STRUK PENYEWAAN')
+        ->assertSee('Sans Line')
+        ->assertSee('Tenda Ultralight')
+        ->assertSee('Rp180.000')
+        ->assertSee('Cetak Struk');
+});
+
+it('does not let customers view another user invoice', function () {
+    $owner = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+    $otherUser = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $order = Order::create([
+        'user_id' => $owner->id,
+        'loan_date' => now(),
+        'return_date' => now()->addDay(),
+        'duration' => 1,
+        'status' => Order::STATUS_ON_RENT,
+        'total_price' => 50000,
+        'total_fine' => 0,
+    ]);
+
+    $this->actingAs($otherUser)
+        ->get(route('profile.orders.invoice', $order))
+        ->assertForbidden();
+});
+
+it('shows invoice links on renting and completed order cards', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $rentingOrder = Order::create([
+        'user_id' => $user->id,
+        'loan_date' => now(),
+        'return_date' => now()->addDays(2),
+        'duration' => 2,
+        'status' => Order::STATUS_ON_RENT,
+        'total_price' => 100000,
+        'total_fine' => 0,
+    ]);
+
+    $completedOrder = Order::create([
+        'user_id' => $user->id,
+        'loan_date' => now()->subDays(4),
+        'return_date' => now()->subDay(),
+        'duration' => 3,
+        'status' => Order::STATUS_COMPLETED,
+        'total_price' => 150000,
+        'total_fine' => 0,
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('profile.orders.renting'))
+        ->assertOk()
+        ->assertSee(route('profile.orders.invoice', $rentingOrder), false);
+
+    $this->actingAs($user)
+        ->get(route('profile.orders.completed'))
+        ->assertOk()
+        ->assertSee(route('profile.orders.invoice', $completedOrder), false);
+});

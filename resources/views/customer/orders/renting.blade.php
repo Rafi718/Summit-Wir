@@ -127,6 +127,10 @@
 
                                     {{-- Tombol --}}
                                     <div class="flex flex-col sm:flex-row gap-2">
+                                        <a href="{{ route('profile.orders.invoice', $order) }}"
+                                            class="flex-1 text-center px-5 py-2.5 bg-white border border-gray-300 text-gray-800 text-sm font-medium rounded-lg hover:bg-gray-50 transition">
+                                            Lihat Struk
+                                        </a>
                                         <form action="{{ route('profile.orders.return', $order) }}" method="POST" class="flex-1">
                                             @csrf
                                             @method('PUT')

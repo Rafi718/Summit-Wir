@@ -123,6 +123,10 @@
 
                                     {{-- Tombol --}}
                                     <div class="flex flex-col sm:flex-row gap-2">
+                                        <a href="{{ route('profile.orders.invoice', $order) }}" 
+                                           class="flex-1 text-center px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
+                                            Lihat Struk
+                                        </a>
                                         <a href="{{ route('products') }}" 
                                            class="flex-1 text-center px-5 py-2.5 bg-white border-2 border-blue-600 text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50 transition">
                                             Sewa Lagi

@@ -100,6 +100,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // ==================== ORDERS ROUTES ====================
     Route::get('/profile/orders/pending', [ProfileController::class, 'pendingOrders'])->name('profile.orders.pending');
     Route::get('/profile/orders/renting', [ProfileController::class, 'rentingOrders'])->name('profile.orders.renting');
+    Route::get('/profile/orders/{order}/invoice', [ProfileController::class, 'invoice'])->name('profile.orders.invoice');
     Route::put('/profile/orders/{order}/return', [ProfileController::class, 'returnOrder'])->name('profile.orders.return');
     Route::get('/profile/orders/completed', [ProfileController::class, 'completedOrders'])->name(
         'profile.orders.completed',

@@ -111,6 +111,15 @@ class ProfileController extends Controller
             ->with('success', 'Pengembalian barang berhasil dikonfirmasi.');
     }
 
+    public function invoice(Order $order)
+    {
+        abort_if($order->user_id !== Auth::id(), 403);
+
+        $order->load(['user', 'orderDetails.product']);
+
+        return view('customer.orders.invoice', compact('order'));
+    }
+
     public function completedOrders()
     {
         $orders = Order::where('user_id', Auth::id())
