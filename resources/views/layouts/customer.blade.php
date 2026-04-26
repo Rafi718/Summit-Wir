@@ -44,11 +44,11 @@
     <div class="fixed top-24 right-4 z-[60] space-y-3 pointer-events-none">
         @if (session('success'))
             <div
-                class="flash-toast pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border border-green-200 bg-white px-4 py-3 shadow-lg transition-all duration-300"
+                class="flash-toast pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-lg transition-all duration-300"
                 role="status"
                 data-flash-toast
             >
-                <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700">
                     <i class="fas fa-check"></i>
                 </div>
                 <div class="min-w-0 flex-1">
