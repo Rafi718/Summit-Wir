@@ -60,6 +60,17 @@
                             <span>Pesanan Dibatalkan/Gagal</span>
                         </a>
 
+                        @auth
+                            <form action="{{ route('logout') }}" method="POST" class="pt-4 mt-4 border-t border-gray-200">
+                                @csrf
+                                <button type="submit"
+                                    class="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-red-600 hover:bg-red-50 transition">
+                                    <i class="fas fa-sign-out-alt w-4 text-center"></i>
+                                    <span>Logout</span>
+                                </button>
+                            </form>
+                        @endauth
+
                     </nav>
 
                 </div>

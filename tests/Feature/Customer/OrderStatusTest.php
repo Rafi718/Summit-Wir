@@ -171,7 +171,11 @@ it('does not reserve stock twice when payment settlement is received more than o
     $this->postJson('/payment/notification', $payload)->assertOk();
     $this->postJson('/payment/notification', $payload)->assertOk();
 
-    expect($order->fresh()->status)->toBe(Order::STATUS_PAID)
+    $order->refresh();
+
+    expect($order->status)->toBe(Order::STATUS_ON_RENT)
+        ->and($order->loan_date)->not->toBeNull()
+        ->and($order->return_date)->not->toBeNull()
         ->and($product->fresh()->stock)->toBe(8)
         ->and($product->fresh()->sold)->toBe(2);
 });
@@ -225,7 +229,7 @@ it('does not reserve stock again when admin starts a paid rental', function () {
         ->and($product->fresh()->sold)->toBe(1);
 });
 
-it('marks an order paid from snap success callback before showing payment status', function () {
+it('starts the rental from snap success callback and shows it in the renting tab', function () {
     $user = User::factory()->create([
         'email_verified_at' => now(),
     ]);
@@ -259,7 +263,8 @@ it('marks an order paid from snap success callback before showing payment status
 
     $response
         ->assertOk()
-        ->assertJsonPath('status', Order::STATUS_PAID);
+        ->assertJsonPath('status', Order::STATUS_ON_RENT)
+        ->assertJsonPath('redirect_url', route('profile.orders.renting'));
 
     $statusResponse = $this->actingAs($user)->get(route('payment.status', $order));
 
@@ -268,7 +273,17 @@ it('marks an order paid from snap success callback before showing payment status
         ->assertViewIs('customer.payment-success')
         ->assertSee('Matras Camping');
 
-    expect($order->fresh()->status)->toBe(Order::STATUS_PAID)
+    $rentingResponse = $this->actingAs($user)->get(route('profile.orders.renting'));
+
+    $rentingResponse
+        ->assertOk()
+        ->assertSee('Matras Camping');
+
+    $order->refresh();
+
+    expect($order->status)->toBe(Order::STATUS_ON_RENT)
+        ->and($order->loan_date)->not->toBeNull()
+        ->and($order->return_date)->not->toBeNull()
         ->and($product->fresh()->stock)->toBe(6)
         ->and($product->fresh()->sold)->toBe(1);
 });

@@ -21,7 +21,7 @@
 
     <script>
         const syncPaymentStatus = async (result) => {
-            await fetch("{{ route('payment.sync', $order) }}", {
+            const response = await fetch("{{ route('payment.sync', $order) }}", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,6 +32,8 @@
                     transaction_status: result.transaction_status || 'pending',
                 }),
             });
+
+            return response.json();
         };
 
         const goToPaymentStatus = () => {
@@ -41,8 +43,8 @@
         document.getElementById('pay-button').addEventListener('click', function() {
             window.snap.pay('{{ $snapToken }}', {
                 onSuccess: async function(result) {
-                    await syncPaymentStatus(result);
-                    goToPaymentStatus();
+                    const payment = await syncPaymentStatus(result);
+                    window.location.href = payment.redirect_url || "{{ route('profile.orders.renting') }}";
                 },
                 onPending: async function(result) {
                     await syncPaymentStatus(result);

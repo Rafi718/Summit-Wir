@@ -70,6 +70,17 @@
             @endif
         </a>
 
+        @auth
+            <form action="{{ route('logout') }}" method="POST" class="pt-2 md:pt-4 mt-2 md:mt-4 border-t border-gray-200">
+                @csrf
+                <button type="submit"
+                    class="flex w-full items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm md:text-base text-red-600 hover:bg-red-50 transition">
+                    <i class="fas fa-sign-out-alt text-base md:text-lg flex-shrink-0"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
+        @endauth
+
     </nav>
 
 </div>

@@ -137,21 +137,6 @@
                     <i class="fas fa-user nav-icon hover:text-green-950"></i>
             </a>
 
-            {{-- Tombol Logout --}}
-            @auth
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit"
-                        class="flex items-center gap-2 px-3 py-1.5
-                            text-sm text-red-600 bg-red-50
-                            rounded-lg border border-red-200
-                            hover:bg-red-100 transition">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Logout
-                    </button>
-                </form>
-            @endauth
-
         </div>
 
         {{-- Tombol menu mobile --}}

@@ -103,6 +103,7 @@ class PaymentController extends Controller
         return response()->json([
             'message' => 'Payment status synced',
             'status' => $order->fresh()->status,
+            'redirect_url' => route('profile.orders.renting'),
         ]);
     }
 
@@ -118,6 +119,7 @@ class PaymentController extends Controller
 
         switch ($order->status) {
             case Order::STATUS_PAID:
+            case Order::STATUS_ON_RENT:
                 $order->load('orderDetails.product');
                 return view('customer.payment-success', compact('order'));
             case Order::STATUS_PENDING:
@@ -149,7 +151,7 @@ class PaymentController extends Controller
                     $order->reserveStock();
                 }
 
-                $order->update(['status' => Order::STATUS_PAID]);
+                $order->startRental();
                 break;
 
             case 'expire':
