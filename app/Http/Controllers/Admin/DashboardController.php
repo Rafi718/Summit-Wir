@@ -20,7 +20,7 @@ class DashboardController extends Controller
         $totalProducts = Product::count();
         $pendingOrders = Order::where('status', 'pending')->count();
         $failedOrders = Order::where('status', 'cancelled')->count();
-        $latestOrders = Order::with(['orderDetails', 'user'])
+        $latestOrders = Order::with(['orderDetails.product', 'user'])
             ->latest()
             ->take(10)
             ->get();

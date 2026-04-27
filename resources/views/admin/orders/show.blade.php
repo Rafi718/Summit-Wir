@@ -32,11 +32,11 @@
                             <span class="ml-2">Pelanggan</span>
                         </div>
                         <p class="text-sm text-gray-600 dark:text-gray-300"><span class="font-medium">Nama:
-                                {{ $order->user->name }}</p>
+                                {{ $order->user?->name ?? 'Customer tidak tersedia' }}</p>
                         <p class="text-sm text-gray-600 dark:text-gray-300"><span class="font-medium">Email:
-                                {{ $order->user->email }}</p>
+                                {{ $order->user?->email ?? '-' }}</p>
                         <p class="text-sm text-gray-600 dark:text-gray-300"><span class="font-medium">No. HP:
-                                {{ $order->user->no_hp }}</p>
+                                {{ $order->user?->no_hp ?? '-' }}</p>
                     </div>
                     <div
                         class="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-2 flex-1 min-w-[280px] m-2 mt-4">

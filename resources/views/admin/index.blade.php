@@ -147,14 +147,14 @@
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $order->user->name }}
+                                    {{ $order->user?->name ?? 'Customer tidak tersedia' }}
                                 </td>
                                 <td class="px-4 py-3 text-xs">
-                                    {{ $order->user->no_hp }}
+                                    {{ $order->user?->no_hp ?? '-' }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     @foreach ($order->orderDetails as $item)
-                                        {{ $item->product->name . ' x' . $item->quantity }} <br>
+                                        {{ ($item->product?->name ?? 'Produk tidak tersedia') . ' x' . $item->quantity }} <br>
                                     @endforeach
                                 </td>
                                 <td class="px-4 py-3 text-sm">
