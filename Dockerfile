@@ -1,4 +1,27 @@
-FROM composer:2 AS vendor
+FROM php:8.3-cli AS php-build-base
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        git \
+        libcurl4-openssl-dev \
+        libicu-dev \
+        libonig-dev \
+        libzip-dev \
+        unzip \
+        zip \
+    && docker-php-ext-install -j"$(nproc)" \
+        bcmath \
+        curl \
+        intl \
+        mbstring \
+        pdo_mysql \
+        zip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+FROM php-build-base AS vendor
 
 WORKDIR /app
 
@@ -33,8 +56,11 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         git \
+        libcurl4-openssl-dev \
         libfreetype6-dev \
+        libicu-dev \
         libjpeg62-turbo-dev \
+        libonig-dev \
         libpng-dev \
         libzip-dev \
         unzip \
@@ -42,8 +68,11 @@ RUN apt-get update \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j"$(nproc)" \
         bcmath \
+        curl \
         exif \
         gd \
+        intl \
+        mbstring \
         opcache \
         pdo_mysql \
         zip \
