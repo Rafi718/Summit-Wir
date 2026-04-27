@@ -48,7 +48,7 @@
 
                         {{-- Pesanan Selesai (Active) --}}
                         <a href="{{ route('profile.orders.completed') }}" 
-                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm bg-blue-50 text-blue-600 font-medium transition">
+                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm bg-green-100 text-green-950 font-medium transition">
                             <i class="fas fa-check-circle w-4 text-center"></i>
                             <span>Pesanan Selesai</span>
                         </a>
@@ -75,7 +75,7 @@
                             <i class="fas fa-check-circle text-6xl text-gray-300 mb-4"></i>
                             <p class="text-gray-500 text-lg mb-4">Belum ada pesanan selesai</p>
                             <a href="{{ route('products') }}" 
-                               class="inline-block px-6 py-2.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
+                               class="inline-block px-6 py-2.5 bg-green-950 text-white text-sm rounded-lg hover:bg-green-900 transition">
                                 Mulai Menyewa
                             </a>
                         </div>
@@ -124,11 +124,11 @@
                                     {{-- Tombol --}}
                                     <div class="flex flex-col sm:flex-row gap-2">
                                         <a href="{{ route('profile.orders.invoice', $order) }}" 
-                                           class="flex-1 text-center px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
+                                           class="flex-1 text-center px-5 py-2.5 bg-green-950 text-white text-sm font-medium rounded-lg hover:bg-green-900 transition">
                                             Lihat Struk
                                         </a>
                                         <a href="{{ route('products') }}" 
-                                           class="flex-1 text-center px-5 py-2.5 bg-white border-2 border-blue-600 text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50 transition">
+                                           class="flex-1 text-center px-5 py-2.5 bg-white border-2 border-green-950 text-green-950 text-sm font-medium rounded-lg hover:bg-green-50 transition">
                                             Sewa Lagi
                                         </a>
                                     </div>

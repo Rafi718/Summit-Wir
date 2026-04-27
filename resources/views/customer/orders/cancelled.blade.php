@@ -55,7 +55,7 @@
 
                         {{-- Pesanan Dibatalkan/Gagal (Active) --}}
                         <a href="{{ route('profile.orders.cancelled') }}" 
-                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm bg-blue-50 text-blue-600 font-medium transition">
+                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm bg-green-100 text-green-950 font-medium transition">
                             <i class="fas fa-times-circle w-4 text-center"></i>
                             <span>Pesanan Dibatalkan/Gagal</span>
                         </a>
@@ -126,7 +126,7 @@
                                     {{-- Tombol --}}
                                     <div class="flex flex-col sm:flex-row gap-2">
                                         <a href="{{ route('products') }}" 
-                                           class="flex-1 text-center px-5 py-2.5 bg-white border-2 border-blue-600 text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50 transition">
+                                           class="flex-1 text-center px-5 py-2.5 bg-white border-2 border-green-950 text-green-950 text-sm font-medium rounded-lg hover:bg-green-50 transition">
                                             Sewa Lagi
                                         </a>
                                     </div>

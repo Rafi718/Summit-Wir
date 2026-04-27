@@ -55,7 +55,7 @@ class PaymentController extends Controller
                 'email' => $user->email,
             ],
             'callbacks' => [
-                'finish' => route('payment.status', $order),
+                'finish' => route('profile.orders.invoice', $order),
             ],
         ];
 
@@ -114,7 +114,7 @@ class PaymentController extends Controller
         return response()->json([
             'message' => 'Payment status synced',
             'status' => $order->fresh()->status,
-            'redirect_url' => route('profile.orders.renting', absolute: false),
+            'redirect_url' => route('profile.orders.invoice', $order, false),
         ]);
     }
 

@@ -41,7 +41,7 @@
 
                         {{-- Sedang Disewa (Active) --}}
                         <a href="{{ route('profile.orders.renting') }}" 
-                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm bg-blue-50 text-blue-600 font-medium transition">
+                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm bg-green-100 text-green-950 font-medium transition">
                             <i class="fas fa-box-open w-4 text-center"></i>
                             <span>Sedang Disewa</span>
                         </a>
@@ -75,7 +75,7 @@
                             <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
                             <p class="text-gray-500 text-lg mb-4">Tidak ada pesanan sedang disewa</p>
                             <a href="{{ route('products') }}" 
-                               class="inline-block px-6 py-2.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
+                               class="inline-block px-6 py-2.5 bg-green-950 text-white text-sm rounded-lg hover:bg-green-900 transition">
                                 Mulai Menyewa
                             </a>
                         </div>
@@ -97,7 +97,7 @@
                                                 @endif
                                             </h3>
                                         </div>
-                                        <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded whitespace-nowrap">
+                                        <span class="px-3 py-1 bg-green-100 text-green-950 text-xs font-medium rounded whitespace-nowrap">
                                             Disewa
                                         </span>
                                     </div>

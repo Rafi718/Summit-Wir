@@ -17,7 +17,7 @@
                 <div>
                     <label for="name" class="block text-gray-600 font-medium mb-2">Nama Lengkap</label>
                     <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}"
-                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-950/20 focus:outline-none transition">
                     @error('name')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -36,7 +36,7 @@
                     <label for="no_hp" class="block text-gray-600 font-medium mb-2">Nomor HP</label>
                     <input type="text" id="no_hp" name="no_hp" value="{{ old('no_hp', $user->no_hp ?? '') }}"
                         placeholder="Contoh: 081234567890"
-                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-950/20 focus:outline-none transition">
                     @error('no_hp')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -55,7 +55,7 @@
                     @endif
 
                     <input type="file" id="ktp_image" name="ktp_image" accept="image/*"
-                        class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-green-950/20 focus:outline-none transition">
                     <p class="text-sm text-gray-400 mt-1">Unggah foto KTP dalam format JPG, PNG, atau JPEG (maks 2MB)</p>
 
                     @error('ktp_image')
@@ -68,7 +68,7 @@
                     <label for="current_password" class="block text-gray-600 font-medium mb-2">Password Lama</label>
                     <input type="password" id="current_password" name="current_password"
                         placeholder="Masukkan password lama Anda"
-                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-950/20 focus:outline-none transition">
                     @error('current_password')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -79,7 +79,7 @@
                     <label for="password" class="block text-gray-600 font-medium mb-2">Password Baru (Opsional)</label>
                     <input type="password" id="password" name="password"
                         placeholder="Kosongkan jika tidak ingin mengubah password"
-                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-950/20 focus:outline-none transition">
                     @error('password')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -91,7 +91,7 @@
                         Baru</label>
                     <input type="password" id="password_confirmation" name="password_confirmation"
                         placeholder="Ulangi password baru"
-                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-950/20 focus:outline-none transition">
                     @error('password_confirmation')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -105,7 +105,7 @@
                     </a>
 
                     <button type="submit"
-                        class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md transition">
+                        class="px-6 py-3 bg-green-950 hover:bg-green-900 text-white font-medium rounded-lg shadow-md transition">
                         Simpan Perubahan
                     </button>
                 </div>

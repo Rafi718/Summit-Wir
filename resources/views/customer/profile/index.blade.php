@@ -27,7 +27,7 @@
 
                         {{-- Profil Saya (active) --}}
                         <a href="{{ route('profile.index') }}" 
-                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm bg-blue-50 text-blue-600 font-medium transition">
+                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm bg-green-100 text-green-950 font-medium transition">
                             <i class="fas fa-user w-4 text-center"></i>
                             <span>Profil Saya</span>
                         </a>
@@ -105,7 +105,7 @@
                         <div>
                             <p class="text-sm text-gray-500 mb-2">Password</p>
                             <p class="text-base font-semibold text-gray-900 mb-1">********</p>
-                            <a href="{{ route('profile.edit') }}" class="text-sm text-blue-600 hover:underline">
+                            <a href="{{ route('profile.edit') }}" class="text-sm text-green-950 hover:underline">
                                 Ganti Password?
                             </a>
                         </div>
@@ -126,7 +126,7 @@
                     {{-- Tombol Edit Profil --}}
                     <div class="mt-8">
                         <a href="{{ route('profile.edit') }}"
-                           class="inline-block px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition">
+                           class="inline-block px-6 py-2.5 bg-green-950 hover:bg-green-900 text-white text-sm font-medium rounded-lg shadow-sm transition">
                            Edit Profil
                         </a>
                         

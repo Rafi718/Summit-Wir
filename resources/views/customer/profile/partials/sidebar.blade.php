@@ -15,7 +15,7 @@
 
         {{-- Profil Saya --}}
         <a href="{{ route('profile.index') }}"
-           class="flex items-center justify-between gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm md:text-base {{ request()->routeIs('profile.index') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
+           class="flex items-center justify-between gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm md:text-base {{ request()->routeIs('profile.index') ? 'bg-green-100 text-green-950 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
             <div class="flex items-center gap-2 md:gap-3">
                 <i class="fas fa-user text-base md:text-lg"></i>
                 <span class="whitespace-nowrap">Profil Saya</span>
@@ -24,7 +24,7 @@
 
         {{-- Pesanan Pending --}}
         <a href="{{ route('profile.orders.pending') }}"
-           class="flex items-center justify-between gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm md:text-base {{ request()->routeIs('profile.orders.pending') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
+           class="flex items-center justify-between gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm md:text-base {{ request()->routeIs('profile.orders.pending') ? 'bg-green-100 text-green-950 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
             <div class="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
                 <i class="far fa-clock text-base md:text-lg flex-shrink-0"></i>
                 <span class="truncate">Pesanan Pending</span>
@@ -36,19 +36,19 @@
 
         {{-- Sedang Disewa --}}
         <a href="{{ route('profile.orders.renting') }}"
-           class="flex items-center justify-between gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm md:text-base {{ request()->routeIs('profile.orders.renting') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
+           class="flex items-center justify-between gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm md:text-base {{ request()->routeIs('profile.orders.renting') ? 'bg-green-100 text-green-950 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
             <div class="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
                 <i class="fas fa-box-open text-base md:text-lg flex-shrink-0"></i>
                 <span class="truncate">Sedang Disewa</span>
             </div>
             @if(isset($rentingCount) && $rentingCount > 0)
-                <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full flex-shrink-0">{{ $rentingCount }}</span>
+                <span class="bg-green-950 text-white text-xs px-2 py-1 rounded-full flex-shrink-0">{{ $rentingCount }}</span>
             @endif
         </a>
 
         {{-- Pesanan Selesai --}}
         <a href="{{ route('profile.orders.completed') }}"
-           class="flex items-center justify-between gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm md:text-base {{ request()->routeIs('profile.orders.completed') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
+           class="flex items-center justify-between gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm md:text-base {{ request()->routeIs('profile.orders.completed') ? 'bg-green-100 text-green-950 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
             <div class="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
                 <i class="fas fa-check-circle text-base md:text-lg flex-shrink-0"></i>
                 <span class="truncate">Pesanan Selesai</span>
@@ -60,7 +60,7 @@
 
         {{-- Pesanan Dibatalkan/Gagal --}}
         <a href="{{ route('profile.orders.cancelled') }}"
-           class="flex items-center justify-between gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm md:text-base {{ request()->routeIs('profile.orders.cancelled') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
+           class="flex items-center justify-between gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm md:text-base {{ request()->routeIs('profile.orders.cancelled') ? 'bg-green-100 text-green-950 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
             <div class="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
                 <i class="fas fa-times-circle text-base md:text-lg flex-shrink-0"></i>
                 <span class="truncate md:whitespace-normal">Pesanan Dibatalkan/Gagal</span>

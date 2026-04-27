@@ -44,7 +44,7 @@
             window.snap.pay('{{ $snapToken }}', {
                 onSuccess: async function(result) {
                     const payment = await syncPaymentStatus(result);
-                    window.location.href = payment.redirect_url || "{{ route('profile.orders.renting', absolute: false) }}";
+                    window.location.href = payment.redirect_url || "{{ route('profile.orders.invoice', $order, false) }}";
                 },
                 onPending: async function(result) {
                     await syncPaymentStatus(result);
