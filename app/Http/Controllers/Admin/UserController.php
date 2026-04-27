@@ -50,10 +50,18 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
+            'no_hp' => 'nullable|string|max:20',
+            'role' => 'required|string|in:user,admin',
             'password' => 'nullable|string|min:8',
-            'ktp_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'ktp_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        if ($request->user()->is($user) && $validated['role'] !== 'admin') {
+            return redirect()
+                ->route('admin.users.edit', $user)
+                ->withErrors(['role' => 'Anda tidak dapat mengubah role akun admin yang sedang digunakan.'])
+                ->withInput();
+        }
 
         // Ganti password jika diisi
         if (!empty($validated['password'])) {
@@ -63,11 +71,11 @@ class UserController extends Controller
         }
 
         // Upload KTP baru jika ada
-        if ($request->hasFile('ktp_photo')) {
-            $file = $request->file('ktp_photo');
+        if ($request->hasFile('ktp_image')) {
+            $file = $request->file('ktp_image');
             $filename = 'ktp_' . $user->id . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('public/ktp', $filename);
-            $validated['ktp_photo'] = 'ktp/' . $filename;
+            $validated['ktp_image'] = 'ktp/' . $filename;
         }
 
         $user->update($validated);

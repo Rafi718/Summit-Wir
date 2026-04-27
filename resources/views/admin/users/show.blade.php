@@ -44,6 +44,14 @@
                     <p class="text-lg font-semibold text-gray-800 dark:text-gray-100">{{ $user->no_hp ?? '-' }}</p>
                 </div>
 
+                {{-- Role --}}
+                <div>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm">Role</p>
+                    <p class="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                        {{ $user->role === 'admin' ? 'Admin' : 'User' }}
+                    </p>
+                </div>
+
                 {{-- Tanggal Bergabung --}}
                 <div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm">Tanggal Bergabung</p>
@@ -51,6 +59,13 @@
                         {{ $user->created_at->format('d M Y, H:i') }}
                     </p>
                 </div>
+            </div>
+
+            <div class="mt-8">
+                <a href="{{ route('admin.users.edit', $user->id) }}"
+                    class="inline-flex px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-md font-medium transition">
+                    Edit Pengguna
+                </a>
             </div>
         </div>
     </div>

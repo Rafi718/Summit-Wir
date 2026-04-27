@@ -35,7 +35,6 @@ services:
       FONNTE_TIMEOUT: "${FONNTE_TIMEOUT:-15}"
     volumes:
       - app_storage:/var/www/html/storage
-      - public_storage:/var/www/html/public/storage
     networks:
       - dokploy-network
     labels:
@@ -48,7 +47,6 @@ services:
 
 volumes:
   app_storage:
-  public_storage:
 
 networks:
   dokploy-network:

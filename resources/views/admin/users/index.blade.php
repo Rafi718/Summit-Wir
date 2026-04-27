@@ -16,6 +16,7 @@
                             <th class="px-4 py-3">Nama Pengguna</th>
                             <th class="px-4 py-3">Email</th>
                             <th class="px-4 py-3">No. HP</th>
+                            <th class="px-4 py-3">Role</th>
                             <th class="px-4 py-3">Terverifikasi</th>
                             <th class="px-4 py-3">Aksi</th>
                         </tr>
@@ -32,6 +33,12 @@
                                 {{ $user->no_hp }}
                             </td>
                             <td class="px-4 py-3 text-sm">
+                                <span
+                                    class="px-2 py-1 font-semibold leading-tight rounded-full {{ $user->role === 'admin' ? 'text-purple-700 bg-purple-100 dark:bg-purple-700 dark:text-purple-100' : 'text-gray-700 bg-gray-100 dark:text-gray-100 dark:bg-gray-700' }}">
+                                    {{ $user->role === 'admin' ? 'Admin' : 'User' }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
                                 {{ $user->email_verified_at ? 'Terverifikasi' : 'Belum Terverifikasi' }}
                             </td>
                             <td class="px-4 py-3 text-sm">
@@ -44,6 +51,17 @@
                                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                        </svg>
+                                    </a>
+
+                                    {{-- Tombol Edit --}}
+                                    <a href="{{ route('admin.users.edit', $user->id) }}"
+                                        class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+                                        aria-label="Edit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
                                         </svg>
                                     </a>
 

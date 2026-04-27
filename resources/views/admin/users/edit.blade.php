@@ -49,6 +49,20 @@
                     @enderror
                 </div>
 
+                {{-- Role --}}
+                <div>
+                    <label class="block text-sm text-gray-500 dark:text-gray-400 mb-1">Role</label>
+                    <select name="role"
+                        class="w-full border rounded-lg px-4 py-2 dark:bg-gray-700 dark:text-gray-200 focus:ring focus:ring-purple-500 focus:outline-none"
+                        required>
+                        <option value="user" @selected(old('role', $user->role) === 'user')>User</option>
+                        <option value="admin" @selected(old('role', $user->role) === 'admin')>Admin</option>
+                    </select>
+                    @error('role')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 {{-- Ganti Password (opsional) --}}
                 <div>
                     <label class="block text-sm text-gray-500 dark:text-gray-400 mb-1">Password Baru (opsional)</label>
