@@ -1,0 +1,39 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      APP_NAME: "Summit Wir"
+      APP_KEY: "${APP_KEY}"
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: "${APP_URL:-http://localhost:8080}"
+      LOG_CHANNEL: stack
+      DB_CONNECTION: mysql
+      DB_HOST: "${DB_HOST:-rental-sumitwir-80lqf8}"
+      DB_PORT: "${DB_PORT:-3306}"
+      DB_DATABASE: "${DB_DATABASE:-summit_wir}"
+      DB_USERNAME: "${DB_USERNAME:-root}"
+      DB_PASSWORD: "${DB_PASSWORD:-12345}"
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      MIDTRANS_MERCHANT_ID: "${MIDTRANS_MERCHANT_ID:-}"
+      MIDTRANS_CLIENT_KEY: "${MIDTRANS_CLIENT_KEY:-}"
+      MIDTRANS_SERVER_KEY: "${MIDTRANS_SERVER_KEY:-}"
+      MIDTRANS_IS_PRODUCTION: "${MIDTRANS_IS_PRODUCTION:-false}"
+      FONNTE_TOKEN: "${FONNTE_TOKEN:-}"
+      FONNTE_ENDPOINT: "${FONNTE_ENDPOINT:-https://api.fonnte.com/send}"
+      FONNTE_COUNTRY_CODE: "${FONNTE_COUNTRY_CODE:-62}"
+      FONNTE_TIMEOUT: "${FONNTE_TIMEOUT:-15}"
+    volumes:
+      - app_storage:/var/www/html/storage
+      - public_storage:/var/www/html/public/storage
+
+volumes:
+  app_storage:
+  public_storage:
