@@ -6,7 +6,7 @@
     <section class="w-11/12 md:w-1/2 mx-auto flex items-center justify-center px-6 py-20">
         <div class="bg-white shadow-lg rounded-2xl p-8 max-w-md w-full text-center">
             <div class="flex justify-center mb-4">
-                <div class="w-14 h-14 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+                <div class="flex h-14 w-14 items-center justify-center rounded-full bg-green-950/10 text-green-950">
                     <i class="fa-brands fa-whatsapp text-3xl"></i>
                 </div>
             </div>
@@ -22,7 +22,7 @@
             </p>
 
             @if (session('message'))
-                <div class="mb-4 p-3 bg-green-100 text-green-700 text-sm rounded-lg">
+                <div class="mb-4 rounded-lg border border-green-950/10 bg-green-950/5 p-3 text-sm text-green-950">
                     {{ session('message') }}
                 </div>
             @endif
@@ -45,11 +45,11 @@
                     name="otp"
                     maxlength="6"
                     required
-                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-center text-xl font-semibold tracking-widest focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-100"
+                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-center text-xl font-semibold tracking-widest focus:border-green-950 focus:outline-none focus:ring-2 focus:ring-green-950/10"
                     placeholder="123456"
                 >
                 <button type="submit"
-                    class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium transition shadow">
+                    class="w-full rounded-lg bg-green-950 py-3 font-medium text-white shadow transition hover:bg-green-900">
                     Verifikasi Akun
                 </button>
             </form>

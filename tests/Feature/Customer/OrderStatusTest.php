@@ -509,7 +509,7 @@ it('starts the rental from snap success callback and shows it in the renting tab
     $response
         ->assertOk()
         ->assertJsonPath('status', Order::STATUS_ON_RENT)
-        ->assertJsonPath('redirect_url', route('profile.orders.renting'));
+        ->assertJsonPath('redirect_url', route('profile.orders.renting', absolute: false));
 
     $statusResponse = $this->actingAs($user)->get(route('payment.status', $order));
 

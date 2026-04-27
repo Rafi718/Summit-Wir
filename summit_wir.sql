@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 26, 2026 at 03:12 PM
+-- Generation Time: Apr 27, 2026 at 03:25 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.30
 
@@ -210,10 +210,10 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `loan_date`, `return_date`, `duration`, `total_price`, `total_fine`, `status`, `snap_token`, `whatsapp_receipt_sent_at`, `whatsapp_receipt_send_attempted_at`, `created_at`, `updated_at`) VALUES
-(37, 25, '2026-04-26 05:26:51', '2026-04-27 05:26:51', 1, 85000, 0, 'completed', '6b72920e-d1ce-4df4-8ea7-1dfa1da156c1', NULL, NULL, '2026-04-25 22:25:54', '2026-04-25 22:28:20'),
-(38, 25, '2026-04-26 05:30:51', '2026-04-27 05:30:51', 1, 170000, 0, 'completed', '34547b47-04c6-4352-a088-601bb4ae82c4', NULL, NULL, '2026-04-25 22:29:56', '2026-04-25 22:52:54'),
-(39, 27, '2026-04-26 14:01:14', '2026-04-27 14:01:14', 1, 170000, 0, 'on_rent', '4e9fed7c-2ab4-4f2c-84d1-485fea17cc5d', NULL, NULL, '2026-04-26 07:00:35', '2026-04-26 07:01:14'),
-(40, 27, '2026-04-26 14:16:44', '2026-04-27 14:16:44', 1, 120000, 0, 'on_rent', '27ef99fa-bdf5-4fcb-9876-a578638e6e12', '2026-04-26 07:16:46', '2026-04-26 07:16:44', '2026-04-26 07:16:15', '2026-04-26 07:16:46');
+(37, NULL, '2026-04-26 05:26:51', '2026-04-27 05:26:51', 1, 85000, 0, 'completed', '6b72920e-d1ce-4df4-8ea7-1dfa1da156c1', NULL, NULL, '2026-04-25 22:25:54', '2026-04-25 22:28:20'),
+(38, NULL, '2026-04-26 05:30:51', '2026-04-27 05:30:51', 1, 170000, 0, 'completed', '34547b47-04c6-4352-a088-601bb4ae82c4', NULL, NULL, '2026-04-25 22:29:56', '2026-04-25 22:52:54'),
+(39, NULL, '2026-04-26 14:01:14', '2026-04-27 14:01:14', 1, 170000, 0, 'on_rent', '4e9fed7c-2ab4-4f2c-84d1-485fea17cc5d', NULL, NULL, '2026-04-26 07:00:35', '2026-04-26 07:01:14'),
+(40, NULL, '2026-04-26 14:16:44', '2026-04-27 14:16:44', 1, 120000, 0, 'on_rent', '27ef99fa-bdf5-4fcb-9876-a578638e6e12', '2026-04-26 07:16:46', '2026-04-26 07:16:44', '2026-04-26 07:16:15', '2026-04-26 07:16:46');
 
 -- --------------------------------------------------------
 
@@ -378,9 +378,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `no_hp`, `ktp_image`, `whatsapp_otp`, `whatsapp_otp_expires_at`, `role`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Admin User', 'admin@example.com', '2025-11-09 18:26:35', '$2y$12$Aq0feKFCKo4vwFbmHKqY3ubqJDb5F.IgLiKXmvBwEsL4Hg/Uy3L9e', '081234567890', 'ktp_images/ktp.jpg', NULL, NULL, 'admin', NULL, '2025-11-09 18:26:35', '2025-11-09 18:26:35', NULL),
-(25, 'sansline 876', 'sansline992@gmail.com', '2026-04-25 05:55:33', '$2y$12$Hxio2DJ7Dj9qdOPSAuQO/ONqVISrHAMxaNu0W0LPQprJLktvvUkQ.', '082218700162', NULL, NULL, NULL, 'admin', NULL, '2026-04-25 05:37:56', '2026-04-25 22:41:37', NULL),
-(27, 'Rafi', 'sansline803@gmail.com', '2026-04-26 06:42:51', '$2y$12$FYngNATxHPhBXr3lWt4iT./QDshWxtooRnRs8FqFPJIGznNOzWaWK', '085774912005', NULL, NULL, NULL, 'user', NULL, '2026-04-26 06:37:01', '2026-04-26 06:42:51', NULL);
+(1, 'Admin User', 'admin@example.com', '2025-11-09 18:26:35', '$2y$12$Aq0feKFCKo4vwFbmHKqY3ubqJDb5F.IgLiKXmvBwEsL4Hg/Uy3L9e', '081234567890', 'ktp_images/ktp.jpg', NULL, NULL, 'user', NULL, '2025-11-09 18:26:35', '2026-04-26 19:57:26', '2026-04-26 19:57:26'),
+(28, 'Sansline', 'rafiprovider4@gmail.com', '2026-04-26 19:48:50', '$2y$12$oDuk66vsSa7W0Ua9Xb3ITuZbtgdL4Aqr4XoCcZ.zS4e8n.vQSrWNC', '085774912005', NULL, NULL, NULL, 'admin', NULL, '2026-04-26 19:48:19', '2026-04-26 19:48:50', NULL);
 
 --
 -- Indexes for dumped tables
@@ -537,7 +536,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Constraints for dumped tables

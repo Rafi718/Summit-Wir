@@ -54,6 +54,9 @@ class PaymentController extends Controller
                 'first_name' => $user->name,
                 'email' => $user->email,
             ],
+            'callbacks' => [
+                'finish' => route('payment.status', $order),
+            ],
         ];
 
         $snapToken = Snap::getSnapToken($params);
@@ -111,7 +114,7 @@ class PaymentController extends Controller
         return response()->json([
             'message' => 'Payment status synced',
             'status' => $order->fresh()->status,
-            'redirect_url' => route('profile.orders.renting'),
+            'redirect_url' => route('profile.orders.renting', absolute: false),
         ]);
     }
 
