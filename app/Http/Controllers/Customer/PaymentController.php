@@ -32,11 +32,23 @@ class PaymentController extends Controller
         $user = Auth::user();
 
         if ($order->user_id != $user->id) {
+            Log::warning('Payment pay forbidden for non-owner.', [
+                'order_id' => $order->id,
+                'order_user_id' => $order->user_id,
+                'auth_user_id' => $user?->id,
+            ]);
+
             abort(403);
         }
 
         // If order already has a snap token, reuse it
         if ($order->snap_token && $order->status === 'pending') {
+            Log::info('Reusing existing Midtrans Snap token.', [
+                'order_id' => $order->id,
+                'auth_user_id' => $user->id,
+                'status' => $order->status,
+            ]);
+
             return view('customer.payment', [
                 'order' => $order,
                 'snapToken' => $order->snap_token,
@@ -59,6 +71,19 @@ class PaymentController extends Controller
             ],
         ];
 
+        Log::info('Creating Midtrans Snap token.', [
+            'order_id' => $order->id,
+            'auth_user_id' => $user->id,
+            'amount' => $params['transaction_details']['gross_amount'],
+            'total_price' => $order->total_price,
+            'status' => $order->status,
+            'is_production' => config('midtrans.is_production'),
+            'has_client_key' => filled(config('midtrans.client_key')),
+            'has_server_key' => filled(config('midtrans.server_key')),
+            'finish_url' => $params['callbacks']['finish'],
+            'app_url' => config('app.url'),
+        ]);
+
         try {
             $snapToken = Snap::getSnapToken($params);
         } catch (\Throwable $exception) {
@@ -68,13 +93,28 @@ class PaymentController extends Controller
                 'is_production' => config('midtrans.is_production'),
                 'has_server_key' => filled(config('midtrans.server_key')),
                 'finish_url' => $params['callbacks']['finish'],
+                'exception_class' => $exception::class,
+                'exception_code' => $exception->getCode(),
                 'error' => $exception->getMessage(),
+                'trace' => $exception->getTraceAsString(),
             ]);
+
+            $message = 'Pembayaran belum dapat diproses. Silakan coba lagi beberapa saat.';
+
+            if (config('app.debug')) {
+                $message .= ' Detail: '.$exception->getMessage();
+            }
 
             return redirect()
                 ->route('checkout', $order)
-                ->with('error', 'Pembayaran belum dapat diproses. Silakan coba lagi beberapa saat.');
+                ->with('error', $message);
         }
+
+        Log::info('Midtrans Snap token created successfully.', [
+            'order_id' => $order->id,
+            'auth_user_id' => $user->id,
+            'token_length' => strlen($snapToken),
+        ]);
 
         $order->update(['snap_token' => $snapToken]);
 
