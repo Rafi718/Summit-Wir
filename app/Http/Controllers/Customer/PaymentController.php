@@ -59,7 +59,22 @@ class PaymentController extends Controller
             ],
         ];
 
-        $snapToken = Snap::getSnapToken($params);
+        try {
+            $snapToken = Snap::getSnapToken($params);
+        } catch (\Throwable $exception) {
+            Log::error('Failed to create Midtrans Snap token.', [
+                'order_id' => $order->id,
+                'amount' => $params['transaction_details']['gross_amount'],
+                'is_production' => config('midtrans.is_production'),
+                'has_server_key' => filled(config('midtrans.server_key')),
+                'finish_url' => $params['callbacks']['finish'],
+                'error' => $exception->getMessage(),
+            ]);
+
+            return redirect()
+                ->route('checkout', $order)
+                ->with('error', 'Pembayaran belum dapat diproses. Silakan coba lagi beberapa saat.');
+        }
 
         $order->update(['snap_token' => $snapToken]);
 
