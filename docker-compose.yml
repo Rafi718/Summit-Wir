@@ -1,11 +1,14 @@
+version: "3.8"
+
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: summitwir-app-compose
     restart: unless-stopped
-    ports:
-      - "${APP_PORT:-8081}:80"
+    expose:
+      - "80"
     environment:
       APP_NAME: "Summit Wir"
       APP_KEY: "${APP_KEY}"
@@ -33,7 +36,20 @@ services:
     volumes:
       - app_storage:/var/www/html/storage
       - public_storage:/var/www/html/public/storage
+    networks:
+      - dokploy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.summitwir-app.rule=Host(`sumit.sanslineai.id`)"
+      - "traefik.http.routers.summitwir-app.entrypoints=web,websecure"
+      - "traefik.http.routers.summitwir-app.tls.certresolver=letsencrypt"
+      - "traefik.http.services.summitwir-app.loadbalancer.server.port=80"
+      - "traefik.docker.network=dokploy-network"
 
 volumes:
   app_storage:
   public_storage:
+
+networks:
+  dokploy-network:
+    external: true
